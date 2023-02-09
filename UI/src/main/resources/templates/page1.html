@@ -105,7 +105,20 @@
 					},
 				});
 
-
+				$("div[aria-label=yes]").click(function () {
+					$.ajax({
+						url: "/page1/delete",
+						type: 'POST',
+						contentType: "application/json; charset=UTF-8",
+						success: function (data) {
+							alert("탈퇴가 처리되었습니다!!!");
+							location.href = "/";
+						},
+						error: function (jqXHR, textStatus, errorThrown) {
+							alert("ERROR : " + textStatus + " : " + errorThrown);
+						}
+					})
+				});
 			})
 			const VIEW = {
 				init: function () {
