@@ -1,0 +1,20 @@
+drop table test_nana0813;
+
+create table test_nana0813(
+USER_NM varchar(20) not null,
+USER_ID varchar(20) not null,
+pw varchar(30) not null,
+regi_dt datetimeoffset default getdate(),
+regi_user varchar(10) not null,
+upda_dt datetime default null,
+upda_user varchar(10) default null,
+use_yn varchar(1) not null
+);
+
+ALTER TABLE test_nana0813
+ADD CONSTRAINT pk_test_nana0813 
+PRIMARY KEY (user_id);
+
+insert into test_nana0813(USER_NM, USER_ID, pw, regi_user, upda_dt, upda_user, use_yn) values('관리자', 'ADMIN', '1234', 'ADMIN', null, null, 'Y');
+
+select * from test_nana0813;   
