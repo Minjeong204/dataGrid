@@ -1,0 +1,11 @@
+server:
+  port: 8081
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true     
+      
+project:
+  resource:
+    url: http://localhost:8082/bi

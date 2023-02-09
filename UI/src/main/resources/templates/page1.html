@@ -1,0 +1,224 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default}">
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<link th:href="@{/asset/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet">F
+	<script>window.jQuery || document.write(decodeURIComponent('%3Cscript src="js/jquery.min.js"%3E%3C/script%3E'))</script>
+	<link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/22.2.3/css/dx.light.css" />
+	<script src="https://cdn3.devexpress.com/jslib/22.2.3/js/dx.all.js"></script>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<div class="content container-fluid">
+			<div>사용자 페이지</div>
+			<button class="btn" id="intro">조회</button>
+			<input type="button" class="btn-open-popup btn" data-toggle="modal" data-target="#exampleModal"
+				value="등록"></input>
+
+			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+				aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+									aria-hidden="true">&times;</span></button>
+							<h4 class="modal-title">등록창</h4>
+						</div>
+						<div class="modal-body">
+							<form action="http://localhost:8082/bi/user/regiUser" method="post">
+								<div class="form-group">
+									<label for="user_id" class="control-label">아이디</label>
+									<input type="text" id="user_id" name="user_id" placeholder="id를 입력하세요"
+										class="form-control"><br>
+								</div>
+								<div class="form-group">
+									<label for="name" class="control-label">이름</label>
+									<input type="text" id="name" name="name" placeholder="이름을 입력하세요"
+										class="form-control"><br>
+								</div>
+								<div class="form-group">
+									<label for="pw" class="control-label">비밀번호</label>
+									<input type="password" id="pw" name="pw" placeholder="비밀번호를 입력하세요"
+										class="form-control"><br>
+								</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Send message</button>
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<table>
+				<thead>
+					<tr>
+						<th>이름</th>
+						<th>id</th>
+						<th>regiUser</th>
+						<th>rediDate</th>
+					</tr>
+				</thead>
+				<tbody class="table_body">
+
+				</tbody>
+			</table>
+			<div class="demo-container">
+				<div id="gridContainer"></div>
+
+				<div id="events">
+					<div>
+						<div class="caption"> Fired events </div>
+						<div id="clear"></div>
+					</div>
+					<ul></ul>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<th:block layout:fragment="script">
+		<script type="text/javascript">
+			$('#exampleModal').on('show.bs.modal', function (event) {
+				var button = $(event.relatedTarget) // Button that triggered the modal// Extract info from data-* attributes
+				// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+				// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+				var modal = $(this)
+			})
+			function logEvent(eventName) {
+				const logList = $('#events ul');
+				const newItem = $('<li>', {text: eventName});
+
+				logList.prepend(newItem);
+			}
+			$(function () {
+				VIEW.init();
+				$('#clear').dxButton({
+					text: 'Clear',
+					onClick() {
+						$('#events ul').empty();
+					},
+				});
+
+
+			})
+			const VIEW = {
+				init: function () {
+					VIEW.btnInit();
+					VIEW.gridInit([]);
+				},
+				btnInit: function () {
+					$("#intro").click(function () {VIEW.introCallback()})
+				},
+				introCallback: function () {
+					$.ajax({
+						url: "/page1/table",
+						type: "POST",
+						contentType: "application/json; charset=UTF-8",
+						success: function (data) {
+							VIEW.gridInit(data);
+						}
+					})
+				},
+				gridInit: function (data) {
+					$("#gridContainer").dxDataGrid(VIEW.gridOption(data));
+				},
+				gridOption: function (data) {
+					const config = {
+						dataSource: data,
+						scrolling: {
+							mode: "vertual"
+						},
+						height: '70vh',
+						columns: VIEW.columns,
+						pager: {
+							visible: true,
+							allowedPageSizes: [10, 20, 50, 100],
+							showPageSizeSelector: true,
+							showInfo: true,
+							showNavigationButtons: true
+						},
+						onContentReady: function (e) {
+							e.component.option("pager.infoText", "조회 건 수: " + e.component.totalCount().toLocaleString());
+						}, editing: {
+							mode: 'row',
+							allowUpdating: true,
+							allowDeleting: true,
+							allowAdding: true,
+						},
+						paging: {
+							pageSize: 20
+						},
+						showBorders: true
+					};
+
+					return config;
+				},
+				columns: [
+					{
+						dataField: 'name',
+						caption: 'name',
+					},
+					{
+						dataField: 'user_id',
+						caption: 'user_id',
+					}, {
+						dataField: 'regiUser',
+						caption: 'regiUser',
+
+					}, {
+						dataField: 'regiDt',
+						caption: 'regiDt',
+
+					},
+				],
+				onEditingStart() {
+					logEvent('EditingStart');
+				},
+				onInitNewRow() {
+					logEvent('InitNewRow');
+				},
+				onRowInserting() {
+					logEvent('RowInserting');
+				},
+				onRowInserted() {
+					logEvent('RowInserted');
+				},
+				onRowUpdating() {
+					logEvent('RowUpdating');
+				},
+				onRowUpdated() {
+					logEvent('RowUpdated');
+				},
+				onRowRemoving() {
+					logEvent('RowRemoving');
+				},
+				onRowRemoved() {
+					logEvent('RowRemoved');
+				},
+				onSaving() {
+					logEvent('Saving');
+				},
+				onSaved() {
+					logEvent('Saved');
+				},
+				onEditCanceling() {
+					logEvent('EditCanceling');
+				},
+				onEditCanceled() {
+					logEvent('EditCanceled');
+				},
+			}
+
+
+
+		</script>
+	</th:block>
+</body>
+
+</html>
