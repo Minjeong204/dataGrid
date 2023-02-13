@@ -17,7 +17,7 @@
 			<button class="btn" id="intro">조회</button>
 			<input type="button" class="btn-open-popup btn" data-toggle="modal" data-target="#exampleModal"
 				value="등록"></input>
-
+			<button class="btn" onclick="javascript:eddl()">수정 혹은 삭제</button>
 			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 				aria-hidden="true">
 				<div class="modal-dialog">
@@ -68,14 +68,9 @@
 				</tbody>
 			</table>
 			<div class="demo-container">
-				<div id="gridContainer"></div>
-
-				<div id="events">
-					<div>
-						<div class="caption"> Fired events </div>
-						<div id="clear"></div>
-					</div>
-					<ul></ul>
+				<div id="data-grid-demo">
+					<div id="gridDeleteSelected"></div>
+					<div id="gridContainer"></div>
 				</div>
 			</div>
 
@@ -84,6 +79,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<th:block layout:fragment="script">
 		<script type="text/javascript">
+			var rownum;
 			$('#exampleModal').on('show.bs.modal', function (event) {
 				var button = $(event.relatedTarget) // Button that triggered the modal// Extract info from data-* attributes
 				// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
@@ -91,11 +87,47 @@
 				var modal = $(this)
 			})
 			function logEvent(eventName) {
-				const logList = $('#events ul');
+				const logList = $('ul');
 				const newItem = $('<li>', {text: eventName});
 
 				logList.prepend(newItem);
 			}
+			function eddl() {
+				var instance = $("#gridContainer").dxDataGrid("instance");
+				var rn = instance.getSelectedRowKeys();
+				var rnj = JSON.stringify(rn);
+				var result = confirm("수정할거면 확인, 삭제할거면 취소 눌러주세요들");
+
+				if (result == true) {
+					console.log("수정" + rn.length);
+					if (rn.length >= 2) {
+						alert("한 번에 하나씩만 수정하셈요...");
+						return false;
+					}
+					
+
+				} else {
+					var result2 = confirm("진짜 삭제할거임?")
+					if (result2 == true) {
+						$.ajax({
+							url: "/page1/delete",
+							type: "POST",
+							contentType: "application/json; charset=UTF-8",
+							data: rnj,
+							dataType: "json",
+							error: function (error, request) {
+								console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+							},
+							success: function (data) {
+								alert("success!");
+							}
+
+						});
+					}
+				}
+
+			}
+
 			$(function () {
 				VIEW.init();
 				$('#clear').dxButton({
@@ -105,21 +137,10 @@
 					},
 				});
 
-				$("div[aria-label=yes]").click(function () {
-					$.ajax({
-						url: "/page1/delete",
-						type: 'POST',
-						contentType: "application/json; charset=UTF-8",
-						success: function (data) {
-							alert("탈퇴가 처리되었습니다!!!");
-							location.href = "/";
-						},
-						error: function (jqXHR, textStatus, errorThrown) {
-							alert("ERROR : " + textStatus + " : " + errorThrown);
-						}
-					})
-				});
-			})
+
+
+
+			});
 			const VIEW = {
 				init: function () {
 					VIEW.btnInit();
@@ -140,6 +161,8 @@
 				},
 				gridInit: function (data) {
 					$("#gridContainer").dxDataGrid(VIEW.gridOption(data));
+
+
 				},
 				gridOption: function (data) {
 					const config = {
@@ -163,6 +186,17 @@
 							allowUpdating: true,
 							allowDeleting: true,
 							allowAdding: true,
+
+						},
+						onRowClick: function (e) {
+
+							//var rn = e.component.getSelectedRowsData();
+							//var rnk = rn.map(row => row.user_id);
+							//var rnf = rnk.join();
+
+						},
+						selection: {
+							mode: 'multiple',
 						},
 						paging: {
 							pageSize: 20
@@ -187,46 +221,16 @@
 					}, {
 						dataField: 'regiDt',
 						caption: 'regiDt',
+						type: 'date'
 
 					},
+
+
 				],
-				onEditingStart() {
-					logEvent('EditingStart');
-				},
-				onInitNewRow() {
-					logEvent('InitNewRow');
-				},
-				onRowInserting() {
-					logEvent('RowInserting');
-				},
-				onRowInserted() {
-					logEvent('RowInserted');
-				},
-				onRowUpdating() {
-					logEvent('RowUpdating');
-				},
-				onRowUpdated() {
-					logEvent('RowUpdated');
-				},
-				onRowRemoving() {
-					logEvent('RowRemoving');
-				},
-				onRowRemoved() {
-					logEvent('RowRemoved');
-				},
-				onSaving() {
-					logEvent('Saving');
-				},
-				onSaved() {
-					logEvent('Saved');
-				},
-				onEditCanceling() {
-					logEvent('EditCanceling');
-				},
-				onEditCanceled() {
-					logEvent('EditCanceled');
-				},
+
 			}
+
+
 
 
 

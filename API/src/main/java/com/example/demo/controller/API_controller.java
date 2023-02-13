@@ -9,6 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Member;
@@ -38,6 +42,12 @@ public class API_controller {
 	@PostMapping("/page1/table")
 	public ResponseEntity<List<Member>> table() {
 		return new ResponseEntity<List<Member>>(memberService.getMemberList(), HttpStatus.OK);
+	}
+
+	@PostMapping("/page1/delete")
+	public ResponseEntity delete(@RequestBody String id) {
+		memberService.delete(id);
+		return new ResponseEntity( HttpStatus.OK);
 	}
 
 	@PostMapping("/user/regiUser")

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.MultiValueMap;
 
 import com.example.demo.model.Member;
 import com.example.demo.repository.MemberRepository;
@@ -23,9 +24,15 @@ public class MemberService {
 	}
 
 	@Transactional
+	public void delete(String id) {
+		Member member = memberRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다. id=" + id));
+		memberRepository.delete(member);
+	}
+
+	@Transactional
 	public Member add(Member member) {
 		return memberRepository.save(member);
 	}
 
-	
 }
