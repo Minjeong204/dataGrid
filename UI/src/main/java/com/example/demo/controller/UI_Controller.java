@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,14 +52,43 @@ public class UI_Controller {
 	}
 
 	@ResponseBody
+	@PostMapping("/page1/regi")
+	public ResponseEntity<Object> regiTable(@RequestBody String json) {
+
+		Gson gson = new Gson();
+
+		List<Map<String, String>> map = gson.fromJson(json, new TypeToken<List<Map<String, String>>>() {
+		}.getType());
+
+		ResponseEntity data = restTemplate.postForEntity("/page1/regi", map, String.class);
+
+		return new ResponseEntity<Object>(data, HttpStatus.OK);
+	}
+
+	@ResponseBody
 	@PostMapping("/page1/delete")
-	public ResponseEntity<Object> deleteTable(@RequestBody  String json) {
+	public ResponseEntity<Object> deleteTable(@RequestBody String json) {
 		System.out.println("gggg");
 		Gson gson = new Gson();
-		
-		List<Map<String, String>> map = gson.fromJson(json, new TypeToken<List<Map<String, String>>>(){}.getType());
+
+		List<Map<String, String>> map = gson.fromJson(json, new TypeToken<List<Map<String, String>>>() {
+		}.getType());
 		String id = (String) map.get(0).get("user_id");
 		ResponseEntity data = restTemplate.postForEntity("/page1/delete", id, String.class);
+		return new ResponseEntity<Object>(data, HttpStatus.OK);
+	}
+
+	@ResponseBody
+	@PostMapping("/page1/update")
+	public ResponseEntity<Object> updateTable(@RequestBody String json) {
+		System.out.println("gggg");
+		Gson gson = new Gson();
+
+		List<Map<String, String>> map = gson.fromJson(json, new TypeToken<List<Map<String, String>>>() {
+		}.getType());
+
+		ResponseEntity data = restTemplate.postForEntity("/page1/update", map, String.class);
+
 		return new ResponseEntity<Object>(data, HttpStatus.OK);
 	}
 

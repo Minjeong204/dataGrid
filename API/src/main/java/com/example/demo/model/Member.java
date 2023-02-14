@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -36,10 +37,10 @@ public class Member {
 	private RoleType regiUser;
 
 	@Column(name = "REGI_DT")
-	 private LocalDateTime regiDt;
+	 private LocalDate regiDt;
 
 	@Column(name = "UPDA_DT")
-	private String updaDt;
+	private LocalDate updaDt;
 
 	@Column(name = "UPDA_USER")
 	private String updaUser;

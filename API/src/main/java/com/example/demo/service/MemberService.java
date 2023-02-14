@@ -30,6 +30,13 @@ public class MemberService {
 		memberRepository.delete(member);
 	}
 
+	/*
+	 * @Transactional public void update(String id, String name) { Member member =
+	 * memberRepository.findById(id) .orElseThrow(() -> new
+	 * IllegalArgumentException("해당 댓글이 존재하지 않습니다. id=" + id));
+	 * 
+	 * memberRepository.save(member); }
+	 */
 	@Transactional
 	public Member add(Member member) {
 		return memberRepository.save(member);

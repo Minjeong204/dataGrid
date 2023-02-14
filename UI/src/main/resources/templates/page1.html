@@ -28,7 +28,7 @@
 							<h4 class="modal-title">등록창</h4>
 						</div>
 						<div class="modal-body">
-							<form action="http://localhost:8082/bi/user/regiUser" method="post">
+							<form action="/page1/regi" method="post">
 								<div class="form-group">
 									<label for="user_id" class="control-label">아이디</label>
 									<input type="text" id="user_id" name="user_id" placeholder="id를 입력하세요"
@@ -47,14 +47,14 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<button type="submit" class="btn btn-primary">Send message</button>
+							<button type="button" class="btn btn-primary" id="submit">Send message</button>
 						</div>
 						</form>
 					</div>
 				</div>
 			</div>
 
-			<table>
+<!--			<table>
 				<thead>
 					<tr>
 						<th>이름</th>
@@ -66,7 +66,7 @@
 				<tbody class="table_body">
 
 				</tbody>
-			</table>
+			</table>-->
 			<div class="demo-container">
 				<div id="data-grid-demo">
 					<div id="gridDeleteSelected"></div>
@@ -92,6 +92,31 @@
 
 				logList.prepend(newItem);
 			}
+			$("#submit").click(function () {
+				var id = $("#user_id").val();
+				var name = $("#name").val();
+				var pw = $("#pw").val();
+
+				var data = [{"user_id": id, "name": name, "pw": pw}];
+				var dataj = JSON.stringify(data);
+				console.log(Array.isArray(dataj));
+				console.log(Array.isArray(data));
+				console.log(data);
+				$.ajax({
+					url: "/page1/regi",
+					type: "POST",
+					contentType: "application/json; charset=UTF-8",
+					data: dataj,
+					dataType: "json",
+					error: function (error, request) {
+						console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+					},
+					success: function (data) {
+						alert("success!");
+					}
+
+				});
+			});
 			function eddl() {
 				var instance = $("#gridContainer").dxDataGrid("instance");
 				var rn = instance.getSelectedRowKeys();
@@ -104,7 +129,23 @@
 						alert("한 번에 하나씩만 수정하셈요...");
 						return false;
 					}
-					
+					var result2 = confirm("진짜로 ㄹㅇ 수정할거임?");
+					if (result2 == true) {
+						$.ajax({
+							url: "/page1/update",
+							type: "POST",
+							contentType: "application/json; charset=UTF-8",
+							data: rnj,
+							dataType: "json",
+							error: function (error, request) {
+								console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+							},
+							success: function (data) {
+								alert("success!");
+							}
+
+						});
+					}
 
 				} else {
 					var result2 = confirm("진짜 삭제할거임?")
@@ -184,8 +225,8 @@
 						}, editing: {
 							mode: 'row',
 							allowUpdating: true,
-							allowDeleting: true,
-							allowAdding: true,
+							allowDeleting: false,
+							allowAdding: false,
 
 						},
 						onRowClick: function (e) {
@@ -221,6 +262,12 @@
 					}, {
 						dataField: 'regiDt',
 						caption: 'regiDt',
+						type: 'date'
+
+					},
+					, {
+						dataField: 'updaDt',
+						caption: 'updaDt',
 						type: 'date'
 
 					},
