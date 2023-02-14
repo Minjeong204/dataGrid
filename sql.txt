@@ -17,4 +17,6 @@ PRIMARY KEY (user_id);
 
 insert into test_nana0813(USER_NM, USER_ID, pw, regi_user, upda_dt, upda_user, use_yn) values('관리자', 'ADMIN', '1234', 'ADMIN', null, null, 'Y');
 
+commit;
+
 select * from test_nana0813;   
