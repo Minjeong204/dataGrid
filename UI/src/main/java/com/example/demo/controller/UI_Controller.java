@@ -51,7 +51,6 @@ public class UI_Controller {
 		return new ResponseEntity<Object>(data, HttpStatus.OK);
 	}
 
-	@ResponseBody
 	@PostMapping("/page1/regi")
 	public ResponseEntity<Object> regiTable(@RequestBody String json) {
 
@@ -60,12 +59,11 @@ public class UI_Controller {
 		List<Map<String, String>> map = gson.fromJson(json, new TypeToken<List<Map<String, String>>>() {
 		}.getType());
 
-		ResponseEntity data = restTemplate.postForEntity("/page1/regi", map, String.class);
+		ResponseEntity<String> data = restTemplate.postForEntity("/page1/regi", map, String.class);
 
 		return new ResponseEntity<Object>(data, HttpStatus.OK);
 	}
 
-	@ResponseBody
 	@PostMapping("/page1/delete")
 	public ResponseEntity<Object> deleteTable(@RequestBody String json) {
 		System.out.println("gggg");
@@ -74,11 +72,10 @@ public class UI_Controller {
 		List<Map<String, String>> map = gson.fromJson(json, new TypeToken<List<Map<String, String>>>() {
 		}.getType());
 		String id = (String) map.get(0).get("user_id");
-		ResponseEntity data = restTemplate.postForEntity("/page1/delete", id, String.class);
+		ResponseEntity<String> data = restTemplate.postForEntity("/page1/delete", id, String.class);
 		return new ResponseEntity<Object>(data, HttpStatus.OK);
 	}
 
-	@ResponseBody
 	@PostMapping("/page1/update")
 	public ResponseEntity<Object> updateTable(@RequestBody String json) {
 		System.out.println("gggg");
@@ -87,7 +84,7 @@ public class UI_Controller {
 		List<Map<String, String>> map = gson.fromJson(json, new TypeToken<List<Map<String, String>>>() {
 		}.getType());
 
-		ResponseEntity data = restTemplate.postForEntity("/page1/update", map, String.class);
+		ResponseEntity<String> data = restTemplate.postForEntity("/page1/update", map, String.class);
 
 		return new ResponseEntity<Object>(data, HttpStatus.OK);
 	}

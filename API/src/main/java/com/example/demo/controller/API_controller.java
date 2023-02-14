@@ -48,24 +48,23 @@ public class API_controller {
 	}
 
 	@PostMapping("/page1/delete")
-	public ResponseEntity delete(@RequestBody String id) {
+	public void delete(@RequestBody String id) {
 		memberService.delete(id);
-		return new ResponseEntity(HttpStatus.OK);
 	}
 
 	@PostMapping("/page1/update")
-	public ResponseEntity update(@RequestBody List<Map<String, String>> map) {
+	public ResponseEntity<List<Map<String, String>>> update(@RequestBody List<Map<String, String>> map) {
 
 		String id = (String) map.get(0).get("user_id");
-		String name = (String) map.get(0).get("name");
+		/* String name = (String) map.get(0).get("name"); */
+		String pw = (String) map.get(0).get("pw");
 		Member member = memberRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다. id=" + id));
-		member.setUser_id(id);
-		member.setName(name);
+		member.setPw(pw);
 		LocalDate date = LocalDate.now();
 		member.setUpdaDt(date);
 		memberService.add(member);
-		return new ResponseEntity(HttpStatus.OK);
+		return new ResponseEntity<List<Map<String, String>>>(map, HttpStatus.OK);
 	}
 
 	@PostMapping("/page1/regi")
