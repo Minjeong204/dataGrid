@@ -208,39 +208,32 @@
 				}
 			}
 			function edit() {
-				var instance = $("#gridContainer").dxDataGrid("instance");
-				var rn = instance.getSelectedRowKeys();
-				var rnj = JSON.stringify(rn);
+				var id = $("#user_id2").val();
+				var name = $("#name2").val();
+				var pw = $("#pw2").val();
 
+				var data = [{"user_id": id, "name": name, "pw": pw}];
+				var dataj = JSON.stringify(data);
+				$.ajax({
+					url: "/page1/update",
+					type: "POST",
+					contentType: "application/json; charset=UTF-8",
+					data: dataj,
+					dataType: "json",
+					error: function (error, request) {
+						console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+					},
+					success: function (data) {
+						alert("success!");
+						location.reload(true);
+					}
 
-
-				console.log("수정" + rn.length);
-				if (rn.length >= 2) {
-					alert("한 번에 하나씩만 수정하셈요...");
-					return false;
-				}
-				var result2 = confirm("진짜로 ㄹㅇ 수정할거임?");
-				if (result2 == true) {
-					$.ajax({
-						url: "/page1/update",
-						type: "POST",
-						contentType: "application/json; charset=UTF-8",
-						data: rnj,
-						dataType: "json",
-						error: function (error, request) {
-							console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-						},
-						success: function (data) {
-							alert("success!");
-							location.reload(true);
-						}
-
-					});
-				}
-
-
-
+				});
 			}
+
+
+
+
 
 			$(function () {
 				VIEW.init();
