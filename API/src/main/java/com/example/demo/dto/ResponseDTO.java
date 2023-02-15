@@ -1,9 +1,8 @@
 package com.example.demo.dto;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import com.example.demo.model.Member;
-import com.example.demo.model.Use_YN;
 
 import lombok.Data;
 
@@ -13,9 +12,9 @@ public class ResponseDTO {
 	private String userName;
 	private String userId;
 	private String pw;
-	private Date regiDate;
+	private LocalDate regiDate;
 	private String regi_user;
-	private Date updaDt;
+	private LocalDate updaDt;
 	private String updaUser;
 	private String userYN;
 

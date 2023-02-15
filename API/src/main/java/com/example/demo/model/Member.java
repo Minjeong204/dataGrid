@@ -1,14 +1,13 @@
 package com.example.demo.model;
 
-import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +15,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
-@Entity(name = "test_nana0813")
+@Entity
+@Table(name = "test_nana0813")
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,7 +37,7 @@ public class Member {
 	private RoleType regiUser;
 
 	@Column(name = "REGI_DT")
-	 private LocalDate regiDt;
+	private LocalDate regiDt;
 
 	@Column(name = "UPDA_DT")
 	private LocalDate updaDt;
@@ -50,7 +50,7 @@ public class Member {
 	private Use_YN useYn;
 
 	@Builder
-	public Member(String name, String user_id, String pw, Date regiDate, RoleType regiUser, String updaDt,
+	public Member(String name, String user_id, String pw, LocalDate regiDate, RoleType regiUser, LocalDate updaDt,
 			String updaUser, Use_YN useYn) {
 		this.name = name;
 		this.user_id = user_id;

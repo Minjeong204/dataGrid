@@ -1,26 +1,30 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/default}">
 
-<head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<link th:href="@{/asset/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet">F
-	<script>window.jQuery || document.write(decodeURIComponent('%3Cscript src="js/jquery.min.js"%3E%3C/script%3E'))</script>
-	<link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/22.2.3/css/dx.light.css" />
-	<script src="https://cdn3.devexpress.com/jslib/22.2.3/js/dx.all.js"></script>
-</head>
 
 <body>
 	<div layout:fragment="content">
 		<div class="content container-fluid">
 			<div>사용자 페이지</div>
+			<br>
 			<button class="btn" id="intro">조회</button>
 			<input type="button" class="btn-open-popup btn" data-toggle="modal" data-target="#exampleModal"
 				value="등록"></input>
 			<input type="button" class="btn-open-popup btn" data-toggle="modal" data-target="#exampleModal2"
 				value="수정"></input>
-			<!--<button class="btn" onclick="javascript:edit()">수정</button>-->
 			<button class="btn" onclick="javascript:delete2()">삭제</button>
+			<input type="text" id="user_names" placeholder="검색할 이름을 입력하시오." />
+			<input type="text" id="user_ids" placeholder="검색할 id를 입력하시오." />
+			<input type="button" id="user_regis" value="수정한 사람들" />
+			<label for="regi_dates_from" class="control-label">등록한 시작날</label>
+			<input type="date" id="regi_dates_from">
+			<label for="regi_dates_to" class="control-label">등록한 마지막날</label>
+			<input type="date" id="regi_dates_to">
+			<label for="upda_dates_from" class="control-label">수정 시작일</label>
+			<input type="date" id="upda_dates_from">
+			<label for="upda_dates_to" class="control-label">수정 마지막일</label>
+			<input type="date" id="upda_dates_to">
+			<br>
 			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 				aria-hidden="true">
 				<div class="modal-dialog">
@@ -92,30 +96,15 @@
 					</div>
 				</div>
 			</div>
-
-			<!--			<table>
-				<thead>
-					<tr>
-						<th>이름</th>
-						<th>id</th>
-						<th>regiUser</th>
-						<th>rediDate</th>
-					</tr>
-				</thead>
-				<tbody class="table_body">
-
-				</tbody>
-			</table>-->
+			<br>
 			<div class="demo-container">
 				<div id="data-grid-demo">
 					<div id="gridDeleteSelected"></div>
 					<div id="gridContainer"></div>
 				</div>
 			</div>
-
 		</div>
 	</div>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<th:block layout:fragment="script">
 		<script type="text/javascript">
 			var rownum;
@@ -138,7 +127,7 @@
 				var pw = rn.map(row => row.pw);
 
 				if (rn.length >= 2) {
-					alert("한 번에 하나씩만 수정하셈요...");
+					alert("한 번에 하나씩만 수정가능합니다.");
 					return false;
 				}
 
@@ -176,7 +165,7 @@
 						console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
 					},
 					success: function (data) {
-						alert("success!");
+						alert("등록 성공하였습니다.");
 						location.reload(true);
 					}
 
@@ -188,7 +177,7 @@
 				var rn = instance.getSelectedRowKeys();
 				var rnj = JSON.stringify(rn);
 
-				var result2 = confirm("진짜 삭제할거임?")
+				var result2 = confirm("정말 삭제하실겁니까?");
 				if (result2 == true) {
 					$.ajax({
 						url: "/page1/delete",
@@ -200,7 +189,7 @@
 							console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
 						},
 						success: function (data) {
-							alert("success!");
+							alert("삭제 성공하였습니다.");
 							location.reload(true);
 						}
 
@@ -224,7 +213,7 @@
 						console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
 					},
 					success: function (data) {
-						alert("success!");
+						alert("수정 성공하였습니다. ");
 						location.reload(true);
 					}
 
@@ -290,7 +279,7 @@
 							e.component.option("pager.infoText", "조회 건 수: " + e.component.totalCount().toLocaleString());
 						}, editing: {
 							mode: 'row',
-							allowUpdating: true,
+							allowUpdating: false,
 							allowDeleting: false,
 							allowAdding: false,
 

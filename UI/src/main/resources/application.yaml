@@ -5,7 +5,6 @@ server:
       charset: UTF-8
       enabled: true
       force: true     
-      
 project:
   resource:
-    url: http://localhost:8082/bi
+    url: http://localhost:8082

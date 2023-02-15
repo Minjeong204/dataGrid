@@ -1,36 +1,47 @@
 package com.example.demo.test;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.List;
-import java.util.logging.Logger;
+import java.time.LocalDate;
 
-import org.apache.juli.logging.Log;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.Member;
-import com.example.demo.repository.MemberRepository;
+import com.example.demo.model.QMember;
+import com.example.demo.model.RoleType;
+import com.example.demo.model.Use_YN;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
-import lombok.extern.slf4j.Slf4j;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
-@DataJpaTest
-@Slf4j
+@Transactional
+@SpringBootTest
 public class test {
-	MemberRepository memberRepository;
+	@PersistenceContext
+	private EntityManager em;
 
 	@BeforeEach
-	void insertTestData() {
-		Member member = new Member();
-		member.setName("kim ori");
-		memberRepository.save(member);
+	public void setup() {
+		LocalDate date = LocalDate.now();
+		Member member = Member.builder().name("집에갈래요").user_id("mama").pw("1234").regiUser(RoleType.USER).regiDate(date)
+				.useYn(Use_YN.Y).build();
 
+		em.persist(member); // 미리 member를 생성한다.
 	}
 
-	/*
-	 * @Test void findAllTest() { // 저장된 데이터 모두를 Spring JPA에 미리 구현된 findAll 명령을 통해
-	 * 불러온다 List<Member> userList = memberRepository.findAll(); for (Member u :
-	 * userList) log.info("[FindAll]: " + u.getName() + " | "); }
-	 */
+	@Test
+	public void membersSearchTest() {
+		JPAQueryFactory query = new JPAQueryFactory(em);
+		QMember qMember = QMember.member;
+
+		// querydsl을 이용해 java구문으로 query를 작성한다.
+		Member member = query.select(qMember).from(qMember).where(qMember.name.eq("집에갈래요")).fetchOne();
+
+		assertEquals(member.getName(), "집에갈래요");
+	}
+
 }
