@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Member;
@@ -45,6 +44,15 @@ public class API_controller {
 	@PostMapping("/page1/table")
 	public ResponseEntity<List<Member>> table() {
 		return new ResponseEntity<List<Member>>(memberService.getMemberList(), HttpStatus.OK);
+	}
+
+	@PostMapping("/page1/search")
+	public ResponseEntity<List<Member>> search(@RequestBody List<Map<String, String>> map) {
+		String id = (String) map.get(0).get("user_id");
+		String name = (String) map.get(0).get("name");
+		System.out.println(id + "dddd");
+		List<Member> members = memberService.getMembers(id, name);
+		return new ResponseEntity<List<Member>>(members, HttpStatus.OK);
 	}
 
 	@PostMapping("/page1/delete")

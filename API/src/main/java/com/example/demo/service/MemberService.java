@@ -3,9 +3,10 @@ package com.example.demo.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.MultiValueMap;
 
 import com.example.demo.model.Member;
 import com.example.demo.repository.MemberRepository;
@@ -42,4 +43,7 @@ public class MemberService {
 		return memberRepository.save(member);
 	}
 
+	public List<Member> getMembers(String user_id, String name) {
+		return (List<Member>) memberRepository.findBySearchOption(user_id, name);
+	}
 }

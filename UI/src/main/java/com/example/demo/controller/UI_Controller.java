@@ -51,6 +51,19 @@ public class UI_Controller {
 		return new ResponseEntity<Object>(data, HttpStatus.OK);
 	}
 
+	@PostMapping("/page1/search")
+	public ResponseEntity<Object> searchTable(@RequestBody String json) {
+		System.out.println(json);
+		Gson gson = new Gson();
+
+		List<Map<String, String>> map = gson.fromJson(json, new TypeToken<List<Map<String, String>>>() {
+		}.getType());
+
+		Object data = restTemplate.postForObject("/page1/search", map, Object.class);
+		System.out.println("data" + data);
+		return new ResponseEntity<Object>(data, HttpStatus.OK);
+	}
+
 	@PostMapping("/page1/regi")
 	public ResponseEntity<Object> regiTable(@RequestBody String json) {
 
@@ -76,6 +89,10 @@ public class UI_Controller {
 		return new ResponseEntity<Object>(data, HttpStatus.OK);
 	}
 
+	/**
+	 * @param json
+	 * @return
+	 */
 	@PostMapping("/page1/update")
 	public ResponseEntity<Object> updateTable(@RequestBody String json) {
 		System.out.println("gggg");

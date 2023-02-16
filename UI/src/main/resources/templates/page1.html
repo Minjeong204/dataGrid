@@ -232,10 +232,6 @@
 						$('#events ul').empty();
 					},
 				});
-
-
-
-
 			});
 			const VIEW = {
 				init: function () {
@@ -243,22 +239,42 @@
 					VIEW.gridInit([]);
 				},
 				btnInit: function () {
-					$("#intro").click(function () {VIEW.introCallback()})
+					$("#intro").click(function () {
+
+						VIEW.introCallback()
+					})
 				},
 				introCallback: function () {
-					$.ajax({
-						url: "/page1/table",
-						type: "POST",
-						contentType: "application/json; charset=UTF-8",
-						success: function (data) {
-							VIEW.gridInit(data);
-						}
-					})
+					var username = $("#user_names").val();
+					var user_id = $("#user_ids").val();
+					if (username == '' && user_id == '') {
+
+						$.ajax({
+							url: "/page1/table",
+							type: "POST",
+							contentType: "application/json; charset=UTF-8",
+							success: function (data) {
+								VIEW.gridInit(data);
+							}
+						})
+					}
+					else {
+						var dataj = [{"user_id": user_id, "name": username}];
+						var data = JSON.stringify(dataj);
+						$.ajax({
+							url: "/page1/search",
+							type: "POST",
+							data: data,
+							contentType: "application/json; charset=UTF-8",
+							success: function (data) {
+								VIEW.gridInit(data);
+								console.log(data);
+							}
+						})
+					}
 				},
 				gridInit: function (data) {
 					$("#gridContainer").dxDataGrid(VIEW.gridOption(data));
-
-
 				},
 				gridOption: function (data) {
 					const config = {

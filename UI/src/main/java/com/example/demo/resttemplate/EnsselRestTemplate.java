@@ -12,7 +12,7 @@ public class EnsselRestTemplate {
 	public RestTemplate resttemplate() {
 		RestTemplate rtf = new RestTemplate();
 		rtf.setUriTemplateHandler(
-				new DefaultUriBuilderFactory(UriComponentsBuilder.fromHttpUrl("http://localhost:8082/bi")));
+				new DefaultUriBuilderFactory(UriComponentsBuilder.fromHttpUrl("http://localhost:8082")));
 
 		return rtf;
 	}
