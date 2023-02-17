@@ -1,22 +1,16 @@
 package com.example.demo.test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.Member;
-import com.example.demo.model.QMember;
-import com.example.demo.model.RoleType;
-import com.example.demo.model.Use_YN;
 import com.example.demo.repository.MemberRepository;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -53,7 +47,9 @@ public class test {
 
 	@Test
 	public void search() {
-		List<Member> nameSearch = memberRepository.findBySearchOption("", "관리자");
+		LocalDate date = LocalDate.parse("2023-02-14");
+		LocalDate date2 = LocalDate.parse("2023-02-15");
+		List<Member> nameSearch = memberRepository.findMembers(null, null, null, null);
 		System.out.println(nameSearch);
 	}
 

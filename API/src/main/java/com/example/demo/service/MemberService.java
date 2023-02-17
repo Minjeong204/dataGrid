@@ -1,10 +1,9 @@
 package com.example.demo.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,19 +30,12 @@ public class MemberService {
 		memberRepository.delete(member);
 	}
 
-	/*
-	 * @Transactional public void update(String id, String name) { Member member =
-	 * memberRepository.findById(id) .orElseThrow(() -> new
-	 * IllegalArgumentException("해당 댓글이 존재하지 않습니다. id=" + id));
-	 * 
-	 * memberRepository.save(member); }
-	 */
 	@Transactional
 	public Member add(Member member) {
 		return memberRepository.save(member);
 	}
 
-	public List<Member> getMembers(String user_id, String name) {
-		return (List<Member>) memberRepository.findBySearchOption(user_id, name);
+	public List<Member> getMembers(String user_id, String name, LocalDate start, LocalDate end) {
+		return (List<Member>) memberRepository.findMembers(user_id, name, start, end);
 	}
 }

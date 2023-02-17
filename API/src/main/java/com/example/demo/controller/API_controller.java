@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -41,17 +43,26 @@ public class API_controller {
 		return new ResponseEntity(emps, HttpStatus.OK);
 	}
 
-	@PostMapping("/page1/table")
-	public ResponseEntity<List<Member>> table() {
-		return new ResponseEntity<List<Member>>(memberService.getMemberList(), HttpStatus.OK);
-	}
+//	@PostMapping("/page1/table")
+//	public ResponseEntity<List<Member>> table() {
+//		return new ResponseEntity<List<Member>>(memberService.getMemberList(), HttpStatus.OK);
+//	}
 
-	@PostMapping("/page1/search")
-	public ResponseEntity<List<Member>> search(@RequestBody List<Map<String, String>> map) {
-		String id = (String) map.get(0).get("user_id");
-		String name = (String) map.get(0).get("name");
+	@PostMapping("/page1/table")
+	public ResponseEntity<List<Member>> search(@RequestBody Map<String, String> map) {
+		String id = (String) map.get("user_id");
+		String name = (String) map.get("name");
+		String starts = (String) map.get("start");
+		String ends = (String) map.get("end");
+
+		System.out.println(starts);
+		LocalDate start = LocalDate.parse(starts);
+		LocalDate end = LocalDate.parse(ends);
+		System.out.println("home");
+
 		System.out.println(id + "dddd");
-		List<Member> members = memberService.getMembers(id, name);
+		List<Member> members = memberService.getMembers(id, name, start, end);
+		System.out.println(members);
 		return new ResponseEntity<List<Member>>(members, HttpStatus.OK);
 	}
 

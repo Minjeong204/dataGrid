@@ -8,10 +8,9 @@
 			<div>사용자 페이지</div>
 			<br>
 			<button class="btn" id="intro">조회</button>
-			<input type="button" class="btn-open-popup btn" data-toggle="modal" data-target="#exampleModal"
-				value="등록"></input>
-			<input type="button" class="btn-open-popup btn" data-toggle="modal" data-target="#exampleModal2"
-				value="수정"></input>
+			<button type="button" class="btn-open-popup btn" data-toggle="modal" data-target="#exampleModal">등록</button>
+			<button type="button" class="btn-open-popup btn" data-toggle="modal"
+				data-target="#exampleModal2">수정</button>
 			<button class="btn" onclick="javascript:delete2()">삭제</button>
 			<input type="text" id="user_names" placeholder="검색할 이름을 입력하시오." />
 			<input type="text" id="user_ids" placeholder="검색할 id를 입력하시오." />
@@ -220,10 +219,6 @@
 				});
 			}
 
-
-
-
-
 			$(function () {
 				VIEW.init();
 				$('#clear').dxButton({
@@ -247,31 +242,25 @@
 				introCallback: function () {
 					var username = $("#user_names").val();
 					var user_id = $("#user_ids").val();
-					if (username == '' && user_id == '') {
-
-						$.ajax({
-							url: "/page1/table",
-							type: "POST",
-							contentType: "application/json; charset=UTF-8",
-							success: function (data) {
-								VIEW.gridInit(data);
-							}
-						})
+					var regif = $("#regi_dates_from").val();
+					var regit = $("#regi_dates_to").val();
+					var inputs = $("input").val();
+					console.log(user_id);
+					if (inputs == '') {
+						inputs = null;
 					}
-					else {
-						var dataj = [{"user_id": user_id, "name": username}];
-						var data = JSON.stringify(dataj);
-						$.ajax({
-							url: "/page1/search",
-							type: "POST",
-							data: data,
-							contentType: "application/json; charset=UTF-8",
-							success: function (data) {
-								VIEW.gridInit(data);
-								console.log(data);
-							}
-						})
-					}
+					var dataj = [{"user_id": user_id, "name": username, "start": regif, "end": regit}];
+					var data = JSON.stringify(dataj);
+					$.ajax({
+						url: "/page1/table",
+						type: "POST",
+						contentType: "application/json; charset=UTF-8",
+						data: data,
+						success: function (data) {
+							VIEW.gridInit(data);
+							console.log(data);
+						}
+					})
 				},
 				gridInit: function (data) {
 					$("#gridContainer").dxDataGrid(VIEW.gridOption(data));

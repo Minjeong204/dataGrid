@@ -2,17 +2,14 @@ package com.example.demo.repository;
 
 import static com.example.demo.model.QMember.member;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import com.example.demo.model.Member;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 public class MemberRepositoryImpl extends QuerydslRepositorySupport implements MemberRepositorycustom {
@@ -24,23 +21,19 @@ public class MemberRepositoryImpl extends QuerydslRepositorySupport implements M
 	}
 
 	@Override
-	public List<Member> findBySearchOption(String user_id, String name) {
-		List<Member> members = queryFactory.selectFrom(member).where(eqId(user_id), containName(name)).fetch();
-		return members;
-	}
-
-	private BooleanExpression eqId(String user_id) {
+	public List<Member> findMembers(String user_id, String name, LocalDate start, LocalDate end) {
+		BooleanBuilder builder = new BooleanBuilder();
 		if (user_id == null || user_id.isEmpty()) {
-			return null;
+			builder.and(member.user_id.eq(user_id));
 		}
-		return member.user_id.eq(user_id);
-	}
-
-	private BooleanExpression containName(String name) {
 		if (name == null || name.isEmpty()) {
-			return null;
+			builder.and(member.name.eq(name));
 		}
-		return member.name.containsIgnoreCase(name);
+		if (start == null || end == null) {
+			builder.and(member.regiDt.between(start, end));
+		}
+		List<Member> members = queryFactory.selectFrom(member).where(builder).fetch();
+		return members;
 	}
 
 }

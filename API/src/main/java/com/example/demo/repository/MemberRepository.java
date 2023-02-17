@@ -9,3 +9,4 @@ import com.example.demo.model.Member;
 public interface MemberRepository extends JpaRepository<Member, String>, MemberRepositorycustom {
 
 }
+      

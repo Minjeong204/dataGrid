@@ -46,21 +46,14 @@ public class UI_Controller {
 	}
 
 	@PostMapping("/page1/table")
-	public ResponseEntity<Object> page1Table() {
-		Object data = restTemplate.postForObject("/page1/table", null, Object.class);
-		return new ResponseEntity<Object>(data, HttpStatus.OK);
-	}
-
-	@PostMapping("/page1/search")
 	public ResponseEntity<Object> searchTable(@RequestBody String json) {
 		System.out.println(json);
 		Gson gson = new Gson();
 
-		List<Map<String, String>> map = gson.fromJson(json, new TypeToken<List<Map<String, String>>>() {
+		Map<String, String> map = gson.fromJson(json, new TypeToken<Map<String, String>>() {
 		}.getType());
 
-		Object data = restTemplate.postForObject("/page1/search", map, Object.class);
-		System.out.println("data" + data);
+		Object data = restTemplate.postForObject("/page1/table", map, Object.class);
 		return new ResponseEntity<Object>(data, HttpStatus.OK);
 	}
 
