@@ -33,8 +33,7 @@ public class Member {
 	private String pw;
 
 	@Column(name = "REGI_USER")
-	@Enumerated(EnumType.STRING)
-	private RoleType regiUser;
+	private String regiUser;
 
 	@Column(name = "REGI_DT")
 	private LocalDate regiDt;
@@ -50,7 +49,7 @@ public class Member {
 	private Use_YN useYn;
 
 	@Builder
-	public Member(String name, String user_id, String pw, LocalDate regiDate, RoleType regiUser, LocalDate updaDt,
+	public Member(String name, String user_id, String pw, LocalDate regiDate, String regiUser, LocalDate updaDt,
 			String updaUser, Use_YN useYn) {
 		this.name = name;
 		this.user_id = user_id;

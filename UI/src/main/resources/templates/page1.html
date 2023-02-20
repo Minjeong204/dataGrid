@@ -12,9 +12,14 @@
 			<button type="button" class="btn-open-popup btn" data-toggle="modal"
 				data-target="#exampleModal2">수정</button>
 			<button class="btn" onclick="javascript:delete2()">삭제</button>
+			<label for="user_names" class="control-label">이름으로 검색</label>
 			<input type="text" id="user_names" placeholder="검색할 이름을 입력하시오." />
+			<label for="user_ids" class="control-label">ID로 검색</label>
 			<input type="text" id="user_ids" placeholder="검색할 id를 입력하시오." />
-			<input type="button" id="user_regis" value="수정한 사람들" />
+			<label for="regiUser" class="control-label">등록한 사람으로 검색</label>
+			<input type="text" id="regiUser" placeholder="등록한 사람들" />
+			<label for="updaUser" class="control-label">수정한 사람으로 검색</label>
+			<input type="text" id="updaUser" placeholder="수정한 사람" />
 			<label for="regi_dates_from" class="control-label">등록한 시작날</label>
 			<input type="date" id="regi_dates_from">
 			<label for="regi_dates_to" class="control-label">등록한 마지막날</label>
@@ -242,14 +247,18 @@
 				introCallback: function () {
 					var username = $("#user_names").val();
 					var user_id = $("#user_ids").val();
+					var regiUser = $("#regiUser").val();
+					var updaUser = $("#updaUser").val();
 					var regif = $("#regi_dates_from").val();
 					var regit = $("#regi_dates_to").val();
+					var updaf = $("#upda_dates_from").val();
+					var updat = $("#upda_dates_to").val();
 					var inputs = $("input").val();
 					console.log(user_id);
 					if (inputs == '') {
 						inputs = null;
 					}
-					var dataj = [{"user_id": user_id, "name": username, "start": regif, "end": regit}];
+					var dataj = {user_id: user_id, name: username, regiUser: regiUser, updaUser: updaUser, regif: regif, regit: regit, updaf: updaf, updat: updat};
 					var data = JSON.stringify(dataj);
 					$.ajax({
 						url: "/page1/table",
@@ -329,7 +338,12 @@
 						type: 'date'
 
 					},
-					, {
+					,
+					{
+						dataField: 'updaUser',
+						caption: 'updaUser',
+
+					}, {
 						dataField: 'updaDt',
 						caption: 'updaDt',
 						type: 'date'

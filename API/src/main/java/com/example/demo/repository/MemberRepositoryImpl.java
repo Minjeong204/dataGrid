@@ -21,16 +21,26 @@ public class MemberRepositoryImpl extends QuerydslRepositorySupport implements M
 	}
 
 	@Override
-	public List<Member> findMembers(String user_id, String name, LocalDate start, LocalDate end) {
+	public List<Member> findMembers(String user_id, String user_name, String regi_name, String upda_name,
+			LocalDate regiStart, LocalDate regiEnd, LocalDate updaStart, LocalDate updaEnd) {
 		BooleanBuilder builder = new BooleanBuilder();
 		if (!(user_id == null || user_id.isEmpty())) {
 			builder.and(member.user_id.contains(user_id));
 		}
-		if (!(name == null || name.isEmpty())) {
-			builder.and(member.name.contains(name));
+		if (!(user_name == null || user_name.isEmpty())) {
+			builder.and(member.name.contains(user_name));
 		}
-		if (!(start == null || end == null)) {
-			builder.and(member.regiDt.between(start, end));
+		if (!(regi_name == null || regi_name.isEmpty())) {
+			builder.and(member.regiUser.contains(regi_name));
+		}
+		if (!(upda_name == null || upda_name.isEmpty())) {
+			builder.and(member.updaUser.contains(upda_name));
+		}
+		if (!(regiStart == null || regiEnd == null)) {
+			builder.and(member.regiDt.between(regiStart, regiEnd));
+		}
+		if (!(updaStart == null || updaEnd == null)) {
+			builder.and(member.updaDt.between(updaStart, updaEnd));
 		}
 		List<Member> members = queryFactory.selectFrom(member).where(builder).fetch();
 		return members;

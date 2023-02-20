@@ -52,20 +52,29 @@ public class API_controller {
 	public ResponseEntity<List<Member>> search(@RequestBody Map<String, String> map) {
 		String id = (String) map.get("user_id");
 		String name = (String) map.get("name");
-		String starts = (String) map.get("start");
-		String ends = (String) map.get("end");
-		LocalDate start = null;
-		LocalDate end = null;
-		System.out.println(starts);
-		if (!(starts == "") || !(ends == "")) {
-			start = LocalDate.parse(starts);
-			end = LocalDate.parse(ends);
+		String regiUser = (String) map.get("regiUser");
+		String updaUser = (String) map.get("updaUser");
+		String regif = (String) map.get("regif");
+		String regit = (String) map.get("regit");
+		String updaf = (String) map.get("updaf");
+		String updat = (String) map.get("updat");
+		LocalDate regis = null;
+		LocalDate regie = null;
+		LocalDate updas = null;
+		LocalDate updae = null;
+		if (!(regif == "") || !(regit == "")) {
+			regis = LocalDate.parse(regif);
+			regie = LocalDate.parse(regit);
+		}
+		if (!(updaf == "") || !(updat == "")) {
+			updas = LocalDate.parse(updaf);
+			updae = LocalDate.parse(updat);
 		}
 
 		System.out.println("home");
 
 		System.out.println(id + "dddd");
-		List<Member> members = memberService.getMembers(id, name, start, end);
+		List<Member> members = memberService.getMembers(id, name, regiUser, updaUser, regis, regie, updas, updae);
 		System.out.println(members);
 		return new ResponseEntity<List<Member>>(members, HttpStatus.OK);
 	}
@@ -86,6 +95,7 @@ public class API_controller {
 		member.setPw(pw);
 		LocalDate date = LocalDate.now();
 		member.setUpdaDt(date);
+		member.setUpdaUser("USER");
 		memberService.add(member);
 		return new ResponseEntity<List<Map<String, String>>>(map, HttpStatus.OK);
 	}
@@ -99,7 +109,7 @@ public class API_controller {
 		member.setName(name);
 		member.setUser_id(id);
 		member.setPw(pw);
-		member.setRegiUser(RoleType.USER);
+		member.setRegiUser("USER");
 		member.setUseYn(Use_YN.Y);
 		LocalDate date = LocalDate.now();
 		member.setRegiDt(date);

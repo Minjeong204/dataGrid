@@ -35,7 +35,9 @@ public class MemberService {
 		return memberRepository.save(member);
 	}
 
-	public List<Member> getMembers(String user_id, String name, LocalDate start, LocalDate end) {
-		return (List<Member>) memberRepository.findMembers(user_id, name, start, end);
+	public List<Member> getMembers(String user_id, String user_name, String regi_name, String upda_name,
+			LocalDate regiStart, LocalDate regiEnd, LocalDate updaStart, LocalDate updaEnd) {
+		return (List<Member>) memberRepository.findMembers(user_id, user_name, regi_name, upda_name, regiStart, regiEnd,
+				updaStart, updaEnd);
 	}
 }

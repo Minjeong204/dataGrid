@@ -7,5 +7,7 @@ import com.example.demo.model.Member;
 
 public interface MemberRepositorycustom {
 
-	List<Member> findMembers(String user_id, String name, LocalDate start, LocalDate end);
+	List<Member> findMembers(String user_id, String user_name, String regi_name, String upda_name, LocalDate regiStart,
+			LocalDate regiEnd, LocalDate updaStart, LocalDate updaEnd);
+
 }
