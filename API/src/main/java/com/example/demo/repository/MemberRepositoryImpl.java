@@ -23,13 +23,13 @@ public class MemberRepositoryImpl extends QuerydslRepositorySupport implements M
 	@Override
 	public List<Member> findMembers(String user_id, String name, LocalDate start, LocalDate end) {
 		BooleanBuilder builder = new BooleanBuilder();
-		if (user_id == null || user_id.isEmpty()) {
-			builder.and(member.user_id.eq(user_id));
+		if (!(user_id == null || user_id.isEmpty())) {
+			builder.and(member.user_id.contains(user_id));
 		}
-		if (name == null || name.isEmpty()) {
-			builder.and(member.name.eq(name));
+		if (!(name == null || name.isEmpty())) {
+			builder.and(member.name.contains(name));
 		}
-		if (start == null || end == null) {
+		if (!(start == null || end == null)) {
 			builder.and(member.regiDt.between(start, end));
 		}
 		List<Member> members = queryFactory.selectFrom(member).where(builder).fetch();

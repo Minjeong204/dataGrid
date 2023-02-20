@@ -1,6 +1,5 @@
 package com.example.demo.test;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -49,7 +48,7 @@ public class test {
 	public void search() {
 		LocalDate date = LocalDate.parse("2023-02-14");
 		LocalDate date2 = LocalDate.parse("2023-02-15");
-		List<Member> nameSearch = memberRepository.findMembers(null, null, null, null);
+		List<Member> nameSearch = memberRepository.findMembers(null, "", null, null);
 		System.out.println(nameSearch);
 	}
 

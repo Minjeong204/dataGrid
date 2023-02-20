@@ -54,10 +54,14 @@ public class API_controller {
 		String name = (String) map.get("name");
 		String starts = (String) map.get("start");
 		String ends = (String) map.get("end");
-
+		LocalDate start = null;
+		LocalDate end = null;
 		System.out.println(starts);
-		LocalDate start = LocalDate.parse(starts);
-		LocalDate end = LocalDate.parse(ends);
+		if (!(starts == "") || !(ends == "")) {
+			start = LocalDate.parse(starts);
+			end = LocalDate.parse(ends);
+		}
+
 		System.out.println("home");
 
 		System.out.println(id + "dddd");
