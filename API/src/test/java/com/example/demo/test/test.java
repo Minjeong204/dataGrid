@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.Member;
+import com.example.demo.model.Use_YN;
 import com.example.demo.repository.MemberRepository;
 
 import jakarta.persistence.EntityManager;
@@ -48,7 +49,8 @@ public class test {
 	public void search() {
 		LocalDate date = LocalDate.parse("2023-02-14");
 		LocalDate date2 = LocalDate.parse("2023-02-15");
-		List<Member> nameSearch = memberRepository.findMembers(null, null, "admin", null, null, null, null,null);
+		String dates = "2023-02-14";
+		List<Member> nameSearch = memberRepository.findMembers(null, null, null, null, null, null, null, null,"N");
 		System.out.println(nameSearch);
 	}
 

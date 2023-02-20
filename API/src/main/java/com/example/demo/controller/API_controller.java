@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Member;
-import com.example.demo.model.RoleType;
-import com.example.demo.model.Use_YN;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.service.MemberService;
 
@@ -58,23 +56,32 @@ public class API_controller {
 		String regit = (String) map.get("regit");
 		String updaf = (String) map.get("updaf");
 		String updat = (String) map.get("updat");
-		LocalDate regis = null;
-		LocalDate regie = null;
-		LocalDate updas = null;
-		LocalDate updae = null;
-		if (!(regif == "") || !(regit == "")) {
-			regis = LocalDate.parse(regif);
-			regie = LocalDate.parse(regit);
+		String useyn = (String) map.get("useyn");
+		LocalDateTime regis = null;
+		LocalDateTime regie = null;
+		LocalDateTime updas = null;
+		LocalDateTime updae = null;
+
+		if (!(regif.isEmpty())) {
+			regis = LocalDate.parse(regif).atStartOfDay();
 		}
-		if (!(updaf == "") || !(updat == "")) {
-			updas = LocalDate.parse(updaf);
-			updae = LocalDate.parse(updat);
+		if (!(regit.isEmpty())) {
+			regie = LocalDate.parse(regit).atTime(LocalTime.MAX);
 		}
 
-		System.out.println("home");
+		if (!(updaf.isEmpty())) {
+			updas = LocalDate.parse(updaf).atStartOfDay();
+		}
+		if (!(updat.isEmpty())) {
+			updae = LocalDate.parse(updat).atTime(LocalTime.MAX);
+		}
+//		if (useyn.isEmpty()) {
+//			useyn = null;
+//		}
 
 		System.out.println(id + "dddd");
-		List<Member> members = memberService.getMembers(id, name, regiUser, updaUser, regis, regie, updas, updae);
+		List<Member> members = memberService.getMembers(id, name, regiUser, updaUser, regis, regie, updas, updae,
+				useyn);
 		System.out.println(members);
 		return new ResponseEntity<List<Member>>(members, HttpStatus.OK);
 	}
@@ -93,7 +100,7 @@ public class API_controller {
 		Member member = memberRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다. id=" + id));
 		member.setPw(pw);
-		LocalDate date = LocalDate.now();
+		LocalDateTime date = LocalDateTime.now();
 		member.setUpdaDt(date);
 		member.setUpdaUser("USER");
 		memberService.add(member);
@@ -110,8 +117,8 @@ public class API_controller {
 		member.setUser_id(id);
 		member.setPw(pw);
 		member.setRegiUser("USER");
-		member.setUseYn(Use_YN.Y);
-		LocalDate date = LocalDate.now();
+		member.setUseYn("Y");
+		LocalDateTime date = LocalDateTime.now();
 		member.setRegiDt(date);
 		memberService.add(member);
 

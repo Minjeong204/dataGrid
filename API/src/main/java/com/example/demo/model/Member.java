@@ -1,11 +1,10 @@
 package com.example.demo.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -36,21 +35,20 @@ public class Member {
 	private String regiUser;
 
 	@Column(name = "REGI_DT")
-	private LocalDate regiDt;
+	private LocalDateTime regiDt;
 
 	@Column(name = "UPDA_DT")
-	private LocalDate updaDt;
+	private LocalDateTime updaDt;
 
 	@Column(name = "UPDA_USER")
 	private String updaUser;
 
 	@Column(name = "USE_YN")
-	@Enumerated(EnumType.STRING)
-	private Use_YN useYn;
+	private String useYn;
 
 	@Builder
 	public Member(String name, String user_id, String pw, LocalDate regiDate, String regiUser, LocalDate updaDt,
-			String updaUser, Use_YN useYn) {
+			String updaUser, String useYn) {
 		this.name = name;
 		this.user_id = user_id;
 		this.pw = pw;

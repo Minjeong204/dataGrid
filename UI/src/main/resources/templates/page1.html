@@ -28,6 +28,11 @@
 			<input type="date" id="upda_dates_from">
 			<label for="upda_dates_to" class="control-label">수정 마지막일</label>
 			<input type="date" id="upda_dates_to">
+			<select name="use" id="use">
+				<option value="default">USE_YN</option>
+				<option value="Y">Y</option>
+				<option value="N">N</option>
+			</select>
 			<br>
 			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 				aria-hidden="true">
@@ -245,6 +250,12 @@
 					})
 				},
 				introCallback: function () {
+					var useyn = $("#use option:selected").val();
+
+					if (useyn == "default") {
+						useyn = null;
+					}
+					console.log(useyn);
 					var username = $("#user_names").val();
 					var user_id = $("#user_ids").val();
 					var regiUser = $("#regiUser").val();
@@ -253,13 +264,9 @@
 					var regit = $("#regi_dates_to").val();
 					var updaf = $("#upda_dates_from").val();
 					var updat = $("#upda_dates_to").val();
-					var inputs = $("input").val();
-					console.log(user_id);
-					if (inputs == '') {
-						inputs = null;
-					}
-					var dataj = {user_id: user_id, name: username, regiUser: regiUser, updaUser: updaUser, regif: regif, regit: regit, updaf: updaf, updat: updat};
+					var dataj = {user_id: user_id, name: username, regiUser: regiUser, updaUser: updaUser, regif: regif, regit: regit, updaf: updaf, updat: updat, useyn: useyn};
 					var data = JSON.stringify(dataj);
+					console.log(data);
 					$.ajax({
 						url: "/page1/table",
 						type: "POST",
@@ -335,7 +342,12 @@
 					}, {
 						dataField: 'regiDt',
 						caption: 'regiDt',
-						type: 'date'
+						customizeText: function (cellInfo) {
+							var data = null;
+							if (cellInfo.value != null)
+								data = cellInfo.value.substr(0, 10);
+							return data;
+						}
 
 					},
 					,
@@ -346,10 +358,13 @@
 					}, {
 						dataField: 'updaDt',
 						caption: 'updaDt',
-						type: 'date'
-
-					},
-
+						customizeText: function (cellInfo) {
+							var data = null;
+							if (cellInfo.value != null)
+								data = cellInfo.value.substr(0, 10);
+							return data;
+						}
+					}
 
 				],
 

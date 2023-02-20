@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +36,8 @@ public class MemberService {
 	}
 
 	public List<Member> getMembers(String user_id, String user_name, String regi_name, String upda_name,
-			LocalDate regiStart, LocalDate regiEnd, LocalDate updaStart, LocalDate updaEnd) {
+			LocalDateTime regiStart, LocalDateTime regiEnd, LocalDateTime updaStart, LocalDateTime updaEnd, String use_YN) {
 		return (List<Member>) memberRepository.findMembers(user_id, user_name, regi_name, upda_name, regiStart, regiEnd,
-				updaStart, updaEnd);
+				updaStart, updaEnd, use_YN);
 	}
 }
