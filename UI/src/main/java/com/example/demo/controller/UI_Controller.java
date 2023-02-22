@@ -7,13 +7,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
@@ -54,7 +51,7 @@ public class UI_Controller {
 		}.getType());
 
 		Object data = restTemplate.postForObject("/page1/table", map, Object.class);
-		return new ResponseEntity<Object>(data, HttpStatus.OK);
+		return new ResponseEntity<Object> (data, HttpStatus.OK);
 	}
 
 	@PostMapping("/page1/regi")
@@ -62,7 +59,7 @@ public class UI_Controller {
 
 		Gson gson = new Gson();
 
-		List<Map<String, String>> map = gson.fromJson(json, new TypeToken<List<Map<String, String>>>() {
+		Map<String, String> map = gson.fromJson(json, new TypeToken<Map<String, String>>() {
 		}.getType());
 
 		ResponseEntity<String> data = restTemplate.postForEntity("/page1/regi", map, String.class);
@@ -77,8 +74,9 @@ public class UI_Controller {
 
 		List<Map<String, String>> map = gson.fromJson(json, new TypeToken<List<Map<String, String>>>() {
 		}.getType());
-		String id = (String) map.get(0).get("user_id");
-		ResponseEntity<String> data = restTemplate.postForEntity("/page1/delete", id, String.class);
+
+		ResponseEntity<String> data = restTemplate.postForEntity("/page1/delete", map, String.class);
+
 		return new ResponseEntity<Object>(data, HttpStatus.OK);
 	}
 
@@ -91,7 +89,7 @@ public class UI_Controller {
 		System.out.println("gggg");
 		Gson gson = new Gson();
 
-		List<Map<String, String>> map = gson.fromJson(json, new TypeToken<List<Map<String, String>>>() {
+		Map<String, String> map = gson.fromJson(json, new TypeToken<Map<String, String>>() {
 		}.getType());
 
 		ResponseEntity<String> data = restTemplate.postForEntity("/page1/update", map, String.class);

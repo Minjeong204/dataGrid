@@ -46,6 +46,8 @@ public class Member {
 	@Column(name = "USE_YN")
 	private String useYn;
 
+	
+
 	@Builder
 	public Member(String name, String user_id, String pw, LocalDate regiDate, String regiUser, LocalDate updaDt,
 			String updaUser, String useYn) {

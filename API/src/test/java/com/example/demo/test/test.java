@@ -2,15 +2,17 @@ package com.example.demo.test;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.model.Condition;
 import com.example.demo.model.Member;
-import com.example.demo.model.Use_YN;
 import com.example.demo.repository.MemberRepository;
+import com.example.demo.service.MemberService;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -24,6 +26,8 @@ public class test {
 
 	@Autowired
 	MemberRepository memberRepository;
+	@Autowired
+	MemberService memberservice;
 
 //	@BeforeEach
 //	public void setup() {
@@ -50,8 +54,19 @@ public class test {
 		LocalDate date = LocalDate.parse("2023-02-14");
 		LocalDate date2 = LocalDate.parse("2023-02-15");
 		String dates = "2023-02-14";
-		List<Member> nameSearch = memberRepository.findMembers(null, null, null, null, null, null, null, null,"N");
-		System.out.println(nameSearch);
+		Condition condition = new Condition();
+		condition.setUser_id(null);
+		condition.setUser_name(null);
+		condition.setRegi_name(null);
+		condition.setUpda_name(null);
+		condition.setRegiStart(null);
+		condition.setRegiEnd(null);
+		condition.setUpdaStart(null);
+		condition.setUpdaEnd(null);
+		condition.setUse_YN(null);
+
+		List<Map<String, Object>> report = memberRepository.report(condition);
+		System.out.println(report.get(0));
 	}
 
 }

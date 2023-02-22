@@ -1,7 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/default}">
 
-
 <body>
 	<div layout:fragment="content">
 		<div class="content container-fluid">
@@ -11,28 +10,38 @@
 			<button type="button" class="btn-open-popup btn" data-toggle="modal" data-target="#exampleModal">등록</button>
 			<button type="button" class="btn-open-popup btn" data-toggle="modal"
 				data-target="#exampleModal2">수정</button>
-			<button class="btn" onclick="javascript:delete2()">삭제</button>
-			<label for="user_names" class="control-label">이름으로 검색</label>
-			<input type="text" id="user_names" placeholder="검색할 이름을 입력하시오." />
-			<label for="user_ids" class="control-label">ID로 검색</label>
-			<input type="text" id="user_ids" placeholder="검색할 id를 입력하시오." />
-			<label for="regiUser" class="control-label">등록한 사람으로 검색</label>
-			<input type="text" id="regiUser" placeholder="등록한 사람들" />
-			<label for="updaUser" class="control-label">수정한 사람으로 검색</label>
-			<input type="text" id="updaUser" placeholder="수정한 사람" />
-			<label for="regi_dates_from" class="control-label">등록한 시작날</label>
-			<input type="date" id="regi_dates_from">
-			<label for="regi_dates_to" class="control-label">등록한 마지막날</label>
-			<input type="date" id="regi_dates_to">
-			<label for="upda_dates_from" class="control-label">수정 시작일</label>
-			<input type="date" id="upda_dates_from">
-			<label for="upda_dates_to" class="control-label">수정 마지막일</label>
-			<input type="date" id="upda_dates_to">
-			<select name="use" id="use">
-				<option value="default">USE_YN</option>
-				<option value="Y">Y</option>
-				<option value="N">N</option>
-			</select>
+			<button class="btn" onclick="VIEW.delete2()">삭제</button>
+			<br>
+			<br>
+			<form id="condition">
+				<div id="search_condition">
+					<label for="user_names" class="control-label">이름으로 검색</label>
+					<input type="text" id="user_names" name="user_names" placeholder="검색할 이름을 입력하시오." />
+					<label for="user_ids" class="control-label">ID로 검색</label>
+					<input type="text" id="user_ids" name="user_ids" placeholder="검색할 id를 입력하시오." />
+					<br>
+					<label for="regiUser" class="control-label">등록한 사람으로 검색</label>
+					<input type="text" id="regiUser" name="regiUser" placeholder="등록한 사람들" />
+					<label for="updaUser" class="control-label">수정한 사람으로 검색</label>
+					<input type="text" id="updaUser" name="updaUser" placeholder="수정한 사람" />
+					<br>
+					<label for="regi_dates_from" class="control-label">등록한 시작날</label>
+					<input type="date" id="regi_dates_from" name="regi_dates_from">
+					<label for="regi_dates_to" class="control-label">등록한 마지막날</label>
+					<input type="date" id="regi_dates_to" name="regi_dates_to">
+					<br>
+					<label for="upda_dates_from" class="control-label">수정 시작일</label>
+					<input type="date" id="upda_dates_from" name="upda_dates_from">
+					<label for="upda_dates_to" class="control-label">수정 마지막일</label>
+					<input type="date" id="upda_dates_to" name="upda_dates_to">
+					<br>
+					<select name="use" id="use">
+						<option value="">USE_YN</option>
+						<option value="Y">Y</option>
+						<option value="N">N</option>
+					</select>
+				</div>
+			</form>
 			<br>
 			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 				aria-hidden="true">
@@ -44,7 +53,7 @@
 							<h4 class="modal-title">등록창</h4>
 						</div>
 						<div class="modal-body">
-							<form action="/page1/regi" method="post">
+							<form method="post" id="regist">
 								<div class="form-group">
 									<label for="user_id" class="control-label">아이디</label>
 									<input type="text" id="user_id" name="user_id" placeholder="id를 입력하세요"
@@ -63,7 +72,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary" id="submit">Send message</button>
+							<button type="button" class="btn btn-primary" onclick="VIEW.submit()">Send message</button>
 						</div>
 						</form>
 					</div>
@@ -80,7 +89,7 @@
 							<h4 class="modal-title">수정창</h4>
 						</div>
 						<div class="modal-body">
-							<form action="/page1/regi" method="post">
+							<form method="post" id="edit">
 								<div class="form-group">
 									<label for="user_id" class="control-label">아이디</label>
 									<input type="text" id="user_id2" name="user_id2" class="form-control" disabled><br>
@@ -98,7 +107,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary" onclick="javascript:edit()">Send
+							<button type="button" class="btn btn-primary" onclick="VIEW.edit()">Send
 								message</button>
 						</div>
 						</form>
@@ -112,34 +121,33 @@
 					<div id="gridContainer"></div>
 				</div>
 			</div>
+			<div class="demo-container">
+				<div id="data-grid-demo">
+					<div id="gridDeleteSelected"></div>
+					<div id="groupBy"></div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<th:block layout:fragment="script">
 		<script type="text/javascript">
 			var rownum;
 			$('#exampleModal').on('show.bs.modal', function (event) {
-				var button = $(event.relatedTarget) // Button that triggered the modal// Extract info from data-* attributes
-				// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-				// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+				var button = $(event.relatedTarget)
 				var modal = $(this)
 			})
 			$('#exampleModal2').on('show.bs.modal', function (event) {
-				var button = $(event.relatedTarget); // Button that triggered the modal// Extract info from data-* attributes
-				// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-				// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+				var button = $(event.relatedTarget);
 				var modal = $(this);
-
 				var instance = $("#gridContainer").dxDataGrid("instance");
 				var rn = instance.getSelectedRowKeys();
 				var id = rn.map(row => row.user_id);
 				var name = rn.map(row => row.name);
 				var pw = rn.map(row => row.pw);
-
 				if (rn.length >= 2) {
 					alert("한 번에 하나씩만 수정가능합니다.");
 					return false;
 				}
-
 				$("#user_id2").val(id);
 				$("#name2").val(name);
 				$("#pw2").val(pw);
@@ -147,96 +155,30 @@
 				console.log("ddd");
 				console.log(rn);
 
-			})
-			function logEvent(eventName) {
-				const logList = $('ul');
-				const newItem = $('<li>', {text: eventName});
-
-				logList.prepend(newItem);
-			}
-			$("#submit").click(function () {
-				var id = $("#user_id").val();
-				var name = $("#name").val();
-				var pw = $("#pw").val();
-
-				var data = [{"user_id": id, "name": name, "pw": pw}];
-				var dataj = JSON.stringify(data);
-				console.log(Array.isArray(dataj));
-				console.log(Array.isArray(data));
-				console.log(data);
-				$.ajax({
-					url: "/page1/regi",
-					type: "POST",
-					contentType: "application/json; charset=UTF-8",
-					data: dataj,
-					dataType: "json",
-					error: function (error, request) {
-						console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-					},
-					success: function (data) {
-						alert("등록 성공하였습니다.");
-						location.reload(true);
-					}
-
-				});
-			});
-
-			function delete2() {
-				var instance = $("#gridContainer").dxDataGrid("instance");
-				var rn = instance.getSelectedRowKeys();
-				var rnj = JSON.stringify(rn);
-
-				var result2 = confirm("정말 삭제하실겁니까?");
-				if (result2 == true) {
-					$.ajax({
-						url: "/page1/delete",
-						type: "POST",
-						contentType: "application/json; charset=UTF-8",
-						data: rnj,
-						dataType: "json",
-						error: function (error, request) {
-							console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-						},
-						success: function (data) {
-							alert("삭제 성공하였습니다.");
-							location.reload(true);
+			})	
+			
+			$.fn.serializeObject = function () {
+				"use strict";
+				var result = {};
+				var extend = function (i, element) {
+					var node = result[element.name];
+					if ("undefined" !== typeof node && node !== null) {
+						if ($.isArray(node)) {
+							node.push(element.value);
+						} else {
+							result[element.name] = [node, element.value];
 						}
-
-					});
-				}
-			}
-			function edit() {
-				var id = $("#user_id2").val();
-				var name = $("#name2").val();
-				var pw = $("#pw2").val();
-
-				var data = [{"user_id": id, "name": name, "pw": pw}];
-				var dataj = JSON.stringify(data);
-				$.ajax({
-					url: "/page1/update",
-					type: "POST",
-					contentType: "application/json; charset=UTF-8",
-					data: dataj,
-					dataType: "json",
-					error: function (error, request) {
-						console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-					},
-					success: function (data) {
-						alert("수정 성공하였습니다. ");
-						location.reload(true);
+					} else {
+						result[element.name] = element.value;
 					}
+				};
 
-				});
-			}
+				$.each(this.serializeArray(), extend);
+				return result;
+			};
 
 			$(function () {
 				VIEW.init();
-				$('#clear').dxButton({
-					text: 'Clear',
-					onClick() {
-						$('#events ul').empty();
-					},
-				});
 			});
 			const VIEW = {
 				init: function () {
@@ -250,36 +192,26 @@
 					})
 				},
 				introCallback: function () {
-					var useyn = $("#use option:selected").val();
-
-					if (useyn == "default") {
-						useyn = null;
-					}
-					console.log(useyn);
-					var username = $("#user_names").val();
-					var user_id = $("#user_ids").val();
-					var regiUser = $("#regiUser").val();
-					var updaUser = $("#updaUser").val();
-					var regif = $("#regi_dates_from").val();
-					var regit = $("#regi_dates_to").val();
-					var updaf = $("#upda_dates_from").val();
-					var updat = $("#upda_dates_to").val();
-					var dataj = {user_id: user_id, name: username, regiUser: regiUser, updaUser: updaUser, regif: regif, regit: regit, updaf: updaf, updat: updat, useyn: useyn};
-					var data = JSON.stringify(dataj);
-					console.log(data);
+					var data2 = $("#condition").serializeObject();
+					console.log(data2);
+					var data = JSON.stringify(data2);
 					$.ajax({
 						url: "/page1/table",
 						type: "POST",
 						contentType: "application/json; charset=UTF-8",
 						data: data,
 						success: function (data) {
-							VIEW.gridInit(data);
-							console.log(data);
+							VIEW.gridInit(data.members);
+							VIEW.gridInit2(data.report);
+							console.log(data.members)
 						}
 					})
 				},
 				gridInit: function (data) {
 					$("#gridContainer").dxDataGrid(VIEW.gridOption(data));
+				},
+				gridInit2: function (data) {
+					$("#groupBy").dxDataGrid(VIEW.gridOption2(data));
 				},
 				gridOption: function (data) {
 					const config = {
@@ -305,13 +237,6 @@
 							allowAdding: false,
 
 						},
-						onRowClick: function (e) {
-
-							//var rn = e.component.getSelectedRowsData();
-							//var rnk = rn.map(row => row.user_id);
-							//var rnf = rnk.join();
-
-						},
 						selection: {
 							mode: 'multiple',
 						},
@@ -322,6 +247,96 @@
 					};
 
 					return config;
+				},
+				gridOption2: function (data) {
+					const config = {
+						dataSource: data,
+						scrolling: {
+							mode: "vertual"
+						},
+						width: '50vh',
+						columns: VIEW2.columns,
+						editing: {
+							mode: 'row',
+						},
+						pager: {
+							visible: true,
+							showInfo: true,
+						},
+						onContentReady: function (e) {
+							e.component.option("pager.infoText", "조회 건 수: " + e.component.totalCount().toLocaleString());
+						},
+						showBorders: true
+					};
+
+					return config;
+				},
+				delete2: function () {
+					var instance = $("#gridContainer").dxDataGrid("instance");
+					var rn = instance.getSelectedRowKeys();
+					var rnj = JSON.stringify(rn);
+					console.log(rnj);
+
+					var result2 = confirm("정말 삭제하실겁니까?");
+					if (result2 == true) {
+						$.ajax({
+							url: "/page1/delete",
+							type: "POST",
+							contentType: "application/json; charset=UTF-8",
+							data: rnj,
+							dataType: "json",
+							error: function (error, request) {
+								console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+							},
+							success: function (data) {
+								alert("삭제 성공하였습니다.");
+								location.reload(true);
+							}
+
+						});
+					}
+				},
+				edit: function () {
+					var id = $("#user_id2").val();
+					var pw = $("#pw2").val();
+					var data2 = $("#edit").serializeObject();
+					var data = {"user_id": id, "pw": pw};
+					var dataj = JSON.stringify(data);
+					$.ajax({
+						url: "/page1/update",
+						type: "POST",
+						contentType: "application/json; charset=UTF-8",
+						data: dataj,
+						dataType: "json",
+						error: function (error, request) {
+							console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+						},
+						success: function (data) {
+							alert("수정 성공하였습니다. ");
+							location.reload(true);
+						}
+
+					});
+				},
+				submit: function () {
+					var data2 = $("#regist").serializeObject();
+					console.log(data2);
+					var dataj = JSON.stringify(data2);
+					$.ajax({
+						url: "/page1/regi",
+						type: "POST",
+						contentType: "application/json; charset=UTF-8",
+						data: dataj,
+						dataType: "json",
+						error: function (error, request) {
+							console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+						},
+						success: function (data) {
+							alert("등록 성공하였습니다.");
+							location.reload(true);
+						}
+
+					});
 				},
 				columns: [
 					{
@@ -350,7 +365,6 @@
 						}
 
 					},
-					,
 					{
 						dataField: 'updaUser',
 						caption: 'updaUser',
@@ -365,10 +379,23 @@
 							return data;
 						}
 					}
-
 				],
-
 			}
+
+			const VIEW2 = {
+				columns: [
+					{
+						dataField: 'regiDt',
+						caption: '등록일',
+					},
+					{
+						dataField: 'count',
+						caption: '계정수',
+					},
+				],
+			}
+
+
 
 
 
