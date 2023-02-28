@@ -1,14 +1,434 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="layouts/default">
+	layout:decorate="~{layouts/default}">
 
 <body>
-	<th:block layout:fragment="content">
-		<div class="content container-fluid">
-			<div>메뉴 페이지</div>
+
+	<div layout:fragment="content">
+		<div>메뉴 페이지</div>
+		<br>
+		<button class="btn" id="intro">조회</button>
+		<button type="button" class="btn-open-popup btn" data-toggle="modal"
+			data-target="#exampleModal">등록</button>
+		<button type="button" class="btn-open-popup btn" data-toggle="modal"
+			data-target="#exampleModal2">수정</button>
+		<button class="btn" onclick="VIEW.delete2()">삭제</button>
+		<br> <br>
+		<!-- <form id="condition">
+			<div id="search_condition">
+				<label for="user_names" class="control-label">이름으로 검색</label> <input
+					type="text" id="user_names" name="user_names"
+					placeholder="검색할 이름을 입력하시오." /> <label for="user_ids"
+					class="control-label">ID로 검색</label> <input type="text"
+					id="user_ids" name="user_ids" placeholder="검색할 id를 입력하시오." /> <br>
+				<label for="regiUser" class="control-label">등록한 사람으로 검색</label> <input
+					type="text" id="regiUser" name="regiUser" placeholder="등록한 사람들" />
+				<label for="updaUser" class="control-label">수정한 사람으로 검색</label> <input
+					type="text" id="updaUser" name="updaUser" placeholder="수정한 사람" />
+				<br> <label for="regi_dates_from" class="control-label">등록한
+					시작날</label> <input type="date" id="regi_dates_from" name="regi_dates_from">
+				<label for="regi_dates_to" class="control-label">등록한 마지막날</label> <input
+					type="date" id="regi_dates_to" name="regi_dates_to"> <br>
+				<label for="upda_dates_from" class="control-label">수정 시작일</label> <input
+					type="date" id="upda_dates_from" name="upda_dates_from"> <label
+					for="upda_dates_to" class="control-label">수정 마지막일</label> <input
+					type="date" id="upda_dates_to" name="upda_dates_to"> <br>
+				<select name="use" id="use">
+					<option value="">USE_YN</option>
+					<option value="Y">Y</option>
+					<option value="N">N</option>
+				</select>
+			</div>
+		</form> -->
+		<br>
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title">등록창</h4>
+					</div>
+					<div class="modal-body">
+						<form method="post" id="regist">
+							<div class="form-group">
+								<label for="menuId" class="control-label">메뉴아이디</label> <input
+									type="text" id="menuId" name="menuId" placeholder="id를 입력하세요"
+									class="form-control"><br>
+							</div>
+							<div class="form-group">
+								<label for="menuName" class="control-label">메뉴 이름</label> <input
+									type="text" id="menuName" name="menuName"
+									placeholder="이름을 입력하세요" class="form-control"><br>
+							</div>
+							<div class="form-group">
+								<label for="sort" class="control-label">순번</label> <input
+									type="text" id="sort" name="sort" placeholder="순번을 입력하세요"
+									class="form-control"><br>
+							</div>
+							<div class="form-group">
+								<label for="uprMenuId" class="control-label">상위 메뉴 아이디</label> <input
+									type="text" id="uprMenuId" name="uprMenuId"
+									placeholder="상위 메뉴 아이디를 입력하세요" class="form-control"><br>
+							</div>
+							<div class="form-group">
+								<label for="url" class="control-label">url</label> <input
+									type="text" id="url" name="url" placeholder="url을 입력하세요"
+									class="form-control"><br>
+							</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary"
+							onclick="VIEW.submit()">Send message</button>
+					</div>
+					</form>
+				</div>
+			</div>
 		</div>
 
+		<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title">수정창</h4>
+					</div>
+					<div class="modal-body">
+						<form method="post" id="edit">
+							<div class="form-group">
+								<label for="menuIde" class="control-label">메뉴아이디</label> <input
+									type="text" id="menuIde" name="menuIde" class="form-control"
+									disabled><br>
+							</div>
+							<div class="form-group">
+								<label for=urle class="control-label">url</label> <input
+									type="text" id="urle" name="urle" placeholder="비밀번호를 입력하세요"
+									class="form-control" disabled><br>
+							</div>
+							<div class="form-group">
+								<label for="menuNamee" class="control-label">메뉴이름</label> <input
+									type="text" id="menuNamee" name="menuNamee"
+									placeholder="이름을 입력하세요" class="form-control"><br>
+							</div>
+							<div class="form-group">
+								<label for=sorte class="control-label">정렬순</label> <input
+									type="text" id="sorte" name="sorte" placeholder="비밀번호를 입력하세요"
+									class="form-control"><br>
+							</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary"
+							onclick="VIEW.edit()">Send message</button>
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="demo-container">
+			<div id="data-grid-demo">
+				<div id="gridDeleteSelected"></div>
+				<div id="gridContainer"></div>
+			</div>
+		</div>
+		<div class="demo-container">
+			<div id="data-grid-demo">
+				<div id="gridDeleteSelected"></div>
+				<div id="groupBy"></div>
+			</div>
+		</div>
+	</div>
+	<th:block layout:fragment="script">
+		<script type="text/javascript">
+			var rownum;
+			$('#exampleModal').on('show.bs.modal', function (event) {
+				var button = $(event.relatedTarget);
+				var modal = $(this);
+				console.log("소리꾼");
+			})
+			$('#exampleModal2').on('show.bs.modal', function (event) {
+				var button = $(event.relatedTarget);
+				var modal = $(this);
+				var instance = $("#gridContainer").dxDataGrid("instance");
+				var rn = instance.getSelectedRowKeys();
+				var id = rn.map(row => row.menuId);
+				var name = rn.map(row => row.menuNm);
+				var sort = rn.map(row => row.sort);
+				var uprMenuId = rn.map(row => row.uprMenuId);
+				var url = rn.map(row => row.url);
+				if (rn.length >= 2) {
+					alert("한 번에 하나씩만 수정가능합니다.");
+					return false;
+				}
+				$("#menuIde").val(id);
+				$("#menuNamee").val(name);
+				$("#sorte").val(sort);
+				$("#uprMenuIde").val(uprMenuId);
+				$("#urle").val(url);
 
+				console.log("ddd");
+				console.log(rn);
+
+			})	;
+			
+			$.fn.serializeObject = function () {
+				"use strict";
+				var result = {};
+				var extend = function (i, element) {
+					var node = result[element.name];
+					if ("undefined" !== typeof node && node !== null) {
+						if ($.isArray(node)) {
+							node.push(element.value);
+						} else {
+							result[element.name] = [node, element.value];
+						}
+					} else {
+						result[element.name] = element.value;
+					}
+				};
+
+				$.each(this.serializeArray(), extend);
+				return result;
+			};
+
+			$(function () {
+				VIEW.init();
+			});
+			const VIEW = {
+				init: function () {
+					VIEW.btnInit();
+					VIEW.gridInit([]);
+				},
+				btnInit: function () {
+					$("#intro").click(function () {
+
+						VIEW.introCallback()
+					})
+				},
+				introCallback: function () {
+					$.ajax({
+						url: "/page2/table",
+						type: "POST",
+						contentType: "application/json; charset=UTF-8",
+						success: function (data) {
+							VIEW.gridInit(data);
+						}
+					})
+				},
+				gridInit: function (data) {
+					$("#gridContainer").dxDataGrid(VIEW.gridOption(data));
+				},
+				gridInit2: function (data) {
+					$("#groupBy").dxDataGrid(VIEW.gridOption2(data));
+				},
+				gridOption: function (data) {
+					const config = {
+						dataSource: data,
+						scrolling: {
+							mode: "vertual"
+						},
+						height: '70vh',
+						columns: VIEW.columns,
+						pager: {
+							visible: true,
+							allowedPageSizes: [10, 20, 50, 100],
+							showPageSizeSelector: true,
+							showInfo: true,
+							showNavigationButtons: true
+						},
+						onContentReady: function (e) {
+							e.component.option("pager.infoText", "조회 건 수: " + e.component.totalCount().toLocaleString());
+						}, editing: {
+							mode: 'row',
+							allowUpdating: false,
+							allowDeleting: false,
+							allowAdding: false,
+
+						},
+						selection: {
+							mode: 'multiple',
+						},
+						paging: {
+							pageSize: 20
+						},
+						showBorders: true
+					};
+
+					return config;
+				},
+				gridOption2: function (data) {
+					const config = {
+						dataSource: data,
+						scrolling: {
+							mode: "vertual"
+						},
+						width: '50vh',
+						columns: VIEW2.columns,
+						editing: {
+							mode: 'row',
+						},
+						pager: {
+							visible: true,
+							showInfo: true,
+						},
+						onContentReady: function (e) {
+							e.component.option("pager.infoText", "조회 건 수: " + e.component.totalCount().toLocaleString());
+						},
+						showBorders: true
+					};
+
+					return config;
+				},
+				delete2: function () {
+					var instance = $("#gridContainer").dxDataGrid("instance");
+					var rn = instance.getSelectedRowKeys();
+					var rnj = JSON.stringify(rn);
+					console.log(rnj);
+
+					var result2 = confirm("정말 삭제하실겁니까?");
+					if (result2 == true) {
+						$.ajax({
+							url: "/page2/delete",  
+							type: "POST",
+							contentType: "application/json; charset=UTF-8",
+							data: rnj,
+							dataType: "json",
+							error: function (error, request) {
+								console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+							},
+							success: function (data) {
+								alert("삭제 성공하였습니다.");
+								location.reload(true);
+							}
+
+						});
+					}
+				},
+				edit: function () {
+					var MenuId = $("#menuIde").val();
+					var MenuName = $("#menuNamee").val();
+					var sort = $("#sorte").val();
+					var uprMenuId = $("#uprMenuIde").val();
+					var data2 = $("#edit").serializeObject();
+					var data = {"menuId": MenuId, "menuName": MenuName,"sort":sort };
+					var dataj = JSON.stringify(data);
+					$.ajax({
+						url: "/page2/update",
+						type: "POST",
+						contentType: "application/json; charset=UTF-8",
+						data: dataj,
+						dataType: "json",
+						error: function (error, request) {
+							console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+						},
+						success: function (data) {
+							alert("수정 성공하였습니다. ");
+							location.reload(true);
+						}
+
+					});
+				},
+				submit: function () {
+					var data2 = $("#regist").serializeObject();
+					console.log(data2);
+					var dataj = JSON.stringify(data2);
+					$.ajax({
+						url: "/page2/regi",
+						type: "POST",
+						contentType: "application/json; charset=UTF-8",
+						data: dataj,
+						dataType: "json",
+						error: function (error, request) {
+							console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+						},
+						success: function (data) {
+							alert("등록 성공하였습니다.");
+							location.reload(true);
+						}
+
+					});
+				},
+				columns: [
+					{
+						dataField: 'menuId',
+						caption: 'name',
+					},
+					{
+						dataField: 'menuNm',
+						caption: 'user_id',
+					},
+					{
+						dataField: 'sort',
+						caption: 'pw',
+					}, {
+						dataField: 'uprMenuId',
+						caption: 'regiUser',
+
+					}, {
+						dataField: 'url',
+						caption: 'regiUser',
+
+					},{
+						dataField: 'regiUser',
+						caption: 'regiUser',
+
+					}, {
+						dataField: 'regiDt',
+						caption: 'regiDt',
+						customizeText: function (cellInfo) {
+							var data = null;
+							if (cellInfo.value != null)
+								data = cellInfo.value.substr(0, 10);
+							return data;
+						}
+
+					},
+					{
+						dataField: 'updaUser',
+						caption: 'updaUser',
+
+					}, {
+						dataField: 'updaDt',
+						caption: 'updaDt',
+						customizeText: function (cellInfo) {
+							var data = null;
+							if (cellInfo.value != null)
+								data = cellInfo.value.substr(0, 10);
+							return data;
+						}
+					}
+				],
+			}
+
+			const VIEW2 = {
+				columns: [
+					{
+						dataField: 'regiDt',
+						caption: '등록일',
+					},
+					{
+						dataField: 'count',
+						caption: '계정수',
+					},
+				],
+			}
+
+
+
+
+
+
+
+		</script>
 	</th:block>
 </body>
 
