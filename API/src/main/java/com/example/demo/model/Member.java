@@ -7,6 +7,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,7 @@ import lombok.ToString;
 
 @Data
 @Entity
-@Table(name = "test_nana0813")
+@Table(name = "test_nana0813_User")
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor

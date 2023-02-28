@@ -1,40 +1,38 @@
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/default}">
 
 <body>
-	<div layout:fragment="content">
-		<div class="content container-fluid">
+	
+		<div layout:fragment="content">
 			<div>사용자 페이지</div>
 			<br>
 			<button class="btn" id="intro">조회</button>
-			<button type="button" class="btn-open-popup btn" data-toggle="modal" data-target="#exampleModal">등록</button>
+			<button type="button" class="btn-open-popup btn" data-toggle="modal"
+				data-target="#exampleModal">등록</button>
 			<button type="button" class="btn-open-popup btn" data-toggle="modal"
 				data-target="#exampleModal2">수정</button>
 			<button class="btn" onclick="VIEW.delete2()">삭제</button>
-			<br>
-			<br>
+			<br> <br>
 			<form id="condition">
 				<div id="search_condition">
-					<label for="user_names" class="control-label">이름으로 검색</label>
-					<input type="text" id="user_names" name="user_names" placeholder="검색할 이름을 입력하시오." />
-					<label for="user_ids" class="control-label">ID로 검색</label>
-					<input type="text" id="user_ids" name="user_ids" placeholder="검색할 id를 입력하시오." />
-					<br>
-					<label for="regiUser" class="control-label">등록한 사람으로 검색</label>
-					<input type="text" id="regiUser" name="regiUser" placeholder="등록한 사람들" />
-					<label for="updaUser" class="control-label">수정한 사람으로 검색</label>
-					<input type="text" id="updaUser" name="updaUser" placeholder="수정한 사람" />
-					<br>
-					<label for="regi_dates_from" class="control-label">등록한 시작날</label>
-					<input type="date" id="regi_dates_from" name="regi_dates_from">
-					<label for="regi_dates_to" class="control-label">등록한 마지막날</label>
-					<input type="date" id="regi_dates_to" name="regi_dates_to">
-					<br>
-					<label for="upda_dates_from" class="control-label">수정 시작일</label>
-					<input type="date" id="upda_dates_from" name="upda_dates_from">
-					<label for="upda_dates_to" class="control-label">수정 마지막일</label>
-					<input type="date" id="upda_dates_to" name="upda_dates_to">
-					<br>
+					<label for="user_names" class="control-label">이름으로 검색</label> <input
+						type="text" id="user_names" name="user_names"
+						placeholder="검색할 이름을 입력하시오." /> <label for="user_ids"
+						class="control-label">ID로 검색</label> <input type="text"
+						id="user_ids" name="user_ids" placeholder="검색할 id를 입력하시오." /> <br>
+					<label for="regiUser" class="control-label">등록한 사람으로 검색</label> <input
+						type="text" id="regiUser" name="regiUser" placeholder="등록한 사람들" />
+					<label for="updaUser" class="control-label">수정한 사람으로 검색</label> <input
+						type="text" id="updaUser" name="updaUser" placeholder="수정한 사람" />
+					<br> <label for="regi_dates_from" class="control-label">등록한
+						시작날</label> <input type="date" id="regi_dates_from" name="regi_dates_from">
+					<label for="regi_dates_to" class="control-label">등록한 마지막날</label> <input
+						type="date" id="regi_dates_to" name="regi_dates_to"> <br>
+					<label for="upda_dates_from" class="control-label">수정 시작일</label> <input
+						type="date" id="upda_dates_from" name="upda_dates_from"> <label
+						for="upda_dates_to" class="control-label">수정 마지막일</label> <input
+						type="date" id="upda_dates_to" name="upda_dates_to"> <br>
 					<select name="use" id="use">
 						<option value="">USE_YN</option>
 						<option value="Y">Y</option>
@@ -43,72 +41,80 @@
 				</div>
 			</form>
 			<br>
-			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-				aria-hidden="true">
+			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-									aria-hidden="true">&times;</span></button>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
 							<h4 class="modal-title">등록창</h4>
 						</div>
 						<div class="modal-body">
 							<form method="post" id="regist">
 								<div class="form-group">
-									<label for="user_id" class="control-label">아이디</label>
-									<input type="text" id="user_id" name="user_id" placeholder="id를 입력하세요"
+									<label for="user_id" class="control-label">아이디</label> <input
+										type="text" id="user_id" name="user_id"
+										placeholder="id를 입력하세요" class="form-control"><br>
+								</div>
+								<div class="form-group">
+									<label for="name" class="control-label">이름</label> <input
+										type="text" id="name" name="name" placeholder="이름을 입력하세요"
 										class="form-control"><br>
 								</div>
 								<div class="form-group">
-									<label for="name" class="control-label">이름</label>
-									<input type="text" id="name" name="name" placeholder="이름을 입력하세요"
-										class="form-control"><br>
-								</div>
-								<div class="form-group">
-									<label for="pw" class="control-label">비밀번호</label>
-									<input type="password" id="pw" name="pw" placeholder="비밀번호를 입력하세요"
+									<label for="pw" class="control-label">비밀번호</label> <input
+										type="password" id="pw" name="pw" placeholder="비밀번호를 입력하세요"
 										class="form-control"><br>
 								</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary" onclick="VIEW.submit()">Send message</button>
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary"
+								onclick="VIEW.submit()">Send message</button>
 						</div>
 						</form>
 					</div>
 				</div>
 			</div>
 
-			<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-				aria-hidden="true">
+			<div class="modal fade" id="exampleModal2" tabindex="-1"
+				role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-									aria-hidden="true">&times;</span></button>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
 							<h4 class="modal-title">수정창</h4>
 						</div>
 						<div class="modal-body">
 							<form method="post" id="edit">
 								<div class="form-group">
-									<label for="user_id" class="control-label">아이디</label>
-									<input type="text" id="user_id2" name="user_id2" class="form-control" disabled><br>
+									<label for="user_id" class="control-label">아이디</label> <input
+										type="text" id="user_id2" name="user_id2" class="form-control"
+										disabled><br>
 								</div>
 								<div class="form-group">
-									<label for="name" class="control-label">이름</label>
-									<input type="text" id="name2" name="name2" placeholder="이름을 입력하세요"
+									<label for="name" class="control-label">이름</label> <input
+										type="text" id="name2" name="name2" placeholder="이름을 입력하세요"
 										class="form-control" disabled><br>
 								</div>
 								<div class="form-group">
-									<label for="pw" class="control-label">비밀번호</label>
-									<input type="text" id="pw2" name="pw2" placeholder="비밀번호를 입력하세요"
+									<label for="pw" class="control-label">비밀번호</label> <input
+										type="text" id="pw2" name="pw2" placeholder="비밀번호를 입력하세요"
 										class="form-control"><br>
 								</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary" onclick="VIEW.edit()">Send
-								message</button>
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary"
+								onclick="VIEW.edit()">Send message</button>
 						</div>
 						</form>
 					</div>
@@ -128,13 +134,13 @@
 				</div>
 			</div>
 		</div>
-	</div>
 	<th:block layout:fragment="script">
 		<script type="text/javascript">
 			var rownum;
 			$('#exampleModal').on('show.bs.modal', function (event) {
-				var button = $(event.relatedTarget)
-				var modal = $(this)
+				var button = $(event.relatedTarget);
+				var modal = $(this);
+				console.log("소리꾼");
 			})
 			$('#exampleModal2').on('show.bs.modal', function (event) {
 				var button = $(event.relatedTarget);
@@ -155,7 +161,7 @@
 				console.log("ddd");
 				console.log(rn);
 
-			})	
+			})	;
 			
 			$.fn.serializeObject = function () {
 				"use strict";

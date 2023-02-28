@@ -42,6 +42,14 @@ public class UI_Controller {
 		return mv;
 	}
 
+	@GetMapping("/page2")
+	public ModelAndView page2() {
+		ModelAndView mv = new ModelAndView();
+
+		mv.setViewName("page2");
+		return mv;
+	}
+
 	@PostMapping("/page1/table")
 	public ResponseEntity<Object> searchTable(@RequestBody String json) {
 		System.out.println(json);
@@ -51,7 +59,7 @@ public class UI_Controller {
 		}.getType());
 
 		Object data = restTemplate.postForObject("/page1/table", map, Object.class);
-		return new ResponseEntity<Object> (data, HttpStatus.OK);
+		return new ResponseEntity<Object>(data, HttpStatus.OK);
 	}
 
 	@PostMapping("/page1/regi")

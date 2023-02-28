@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" class="no-js">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" class="no-js">
 
 <head th:insert="~{fragments/configHead :: configHead}">
-	<meta charset="UTF-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-</head>
-
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <body>
-	<div layout:fragment="content"></div>
-	<script th:inline="javascript">
+	<div class="content container-fluid">
+		<th:block th:insert="~{fragments/side :: side}"></th:block>
 
+		<div layout:fragment="content"></div>
+	</div>
+	<script th:inline="javascript">
+		
 	</script>
 	<th:block layout:fragment="script">
 

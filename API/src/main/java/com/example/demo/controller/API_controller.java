@@ -25,7 +25,7 @@ public class API_controller {
 		this.memberService = memberService;
 	}
 
-	@PostMapping("/page1/table")
+	@PostMapping("/table")
 	public ResponseEntity<Map<String, Object>> search(@RequestBody Map<String, String> map) {
 		List<Member> members = memberService.getMembers(map);
 		List<Map<String, Object>> report = memberService.report(map);
@@ -35,19 +35,19 @@ public class API_controller {
 		return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
 	}
 
-	@PostMapping("/page1/delete")
+	@PostMapping("/delete")
 	public ResponseEntity<List<Map<String, String>>> delete(@RequestBody List<Map<String, String>> map) {
 		memberService.delete(map);
 		return new ResponseEntity<List<Map<String, String>>>(map, HttpStatus.OK);
 	}
 
-	@PostMapping("/page1/update")
+	@PostMapping("/update")
 	public ResponseEntity<?> update(@RequestBody Map<String, String> map) {
 		memberService.update(map);
 		return new ResponseEntity<Object>(map, HttpStatus.OK);
 	}
 
-	@PostMapping("/page1/regi")
+	@PostMapping("/regi")
 	public ResponseEntity<?> page1(@RequestBody Map<String, String> map) {
 		memberService.add(map);
 		return new ResponseEntity<Object>(HttpStatus.OK);
