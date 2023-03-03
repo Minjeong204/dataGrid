@@ -26,18 +26,35 @@ public class MenuService {
 
 	public List<Menu> getAll() {
 		@SuppressWarnings("unchecked")
-		List<Map<String, Object>> userList = restTemplate.getForObject("http://page1/table", List.class);
+		// List<Map<String, Object>> userList =
+		// restTemplate.getForObject("http://page1/table", List.class);
 		Map<String, String> nameList = new HashMap<>();
 
-		for (Map<String, Object> map : userList) {
-			nameList.put((String)map.get("user_id"), (String)map.get("name"));
-		}
+//		for (Map<String, Object> map : userList) {
+//			nameList.put((String)map.get("user_id"), (String)map.get("name"));
+//		}
 
 		List<Menu> menus = menuRepository.findAll();
 
+		Map<String, String> idmap = new HashMap<>();
+
+		for (Menu a : menus) {
+
+			if (a.getRegiUser() != null)
+				idmap.put(a.getRegiUser(), null);
+
+			if (a.getUpdaUser() != null)
+				idmap.put(a.getUpdaUser(), null);
+		}
+
+		Map<String, String> mapped = restTemplate.postForObject("http://page1/send", idmap, Map.class);
+
 		for (Menu menu : menus) {
-			menu.setRegiUser(nameList.get(menu.getRegiUser()));
-			menu.setUpdaUser(nameList.get(menu.getUpdaUser()));
+//			menu.setRegiUser(nameList.get(menu.getRegiUser()));
+//			menu.setUpdaUser(nameList.get(menu.getUpdaUser()));
+			menu.setRegiUser(mapped.get(menu.getRegiUser()));
+			if (!menu.getUpdaUser().isEmpty() || !(menu.getUpdaUser() == null))
+				menu.setUpdaUser(mapped.get(menu.getUpdaUser()));
 		}
 		return menus;
 	}

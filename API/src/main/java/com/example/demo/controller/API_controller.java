@@ -29,10 +29,10 @@ public class API_controller {
 		return new ResponseEntity<Map<String, Object>>(members, HttpStatus.OK);
 	}
 
-	@GetMapping("/table")
-	public ResponseEntity<List<Member>> search2() {
-		List<Member> members = memberService.send();
-		return new ResponseEntity<List<Member>>(members, HttpStatus.OK);
+	@PostMapping("/send")
+	public ResponseEntity<Map<String, String>> search2(@RequestBody Map<String, String> ids) {
+		Map<String, String> members = memberService.send(ids);
+		return new ResponseEntity<Map<String, String>>(members, HttpStatus.OK);
 	}
 
 	@PostMapping("/delete")
@@ -53,4 +53,5 @@ public class API_controller {
 		return new ResponseEntity<Object>(HttpStatus.OK);
 	}
 
+	
 }

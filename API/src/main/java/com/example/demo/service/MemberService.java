@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,9 +60,17 @@ public class MemberService {
 		return members;
 	}
 	
-	public List<Member> send(){
-		List<Member> members = memberRepository.findAll();
+	public Map<String, String> send(Map<String, String> ids){
 		
-		return members;
+		Set<String> idSet = ids.keySet();
+		
+		for(String a: idSet) {
+			Member temp = memberRepository.findById(a).orElse(null);
+			if(temp!=null) {
+				ids.replace(a,temp.getName());
+			}
+		}
+		
+		return ids;
 	}
 }
