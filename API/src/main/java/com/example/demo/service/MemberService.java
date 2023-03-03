@@ -1,8 +1,6 @@
 package com.example.demo.service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
@@ -24,26 +22,18 @@ public class MemberService {
 	}
 
 	@Transactional
-	public void delete(List<Map<String, String>> map) {
-		for (int i = 0; i < map.size(); i++) {
-			String id = (String) map.get(i).get("user_id");
-			Member member = memberRepository.findById(id)
-					.orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다. id=" + id));
+	public void delete(String arr[]) {
+		for (int i = 0; i < arr.length; i++) {
+			Member member = memberRepository.findById(arr[i])
+					.orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다. id="));
 			memberRepository.delete(member);
 		}
 	}
 
 	@Transactional
-	public Member add(Map<String, String> map) {
-		String id = (String) map.get("user_id");
-		String name = (String) map.get("name");
-		String pw = (String) map.get("pw");
-
-		Member member = new Member();
-		member.setName(name);
-		member.setUser_id(id);
-		member.setPw(pw);
-		member.setRegiUser("USER");
+	public Member add(Member member) {
+		
+		member.setRegiUser("ADMIN");
 		member.setUseYn("Y");
 		LocalDateTime date = LocalDateTime.now();
 		member.setRegiDt(date);
@@ -52,103 +42,26 @@ public class MemberService {
 	}
 
 	@Transactional
-	public Member update(Map<String, String> map) {
-		String id = (String) map.get("user_id");
-		String pw = (String) map.get("pw");
-		Member member = memberRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다. id=" + id));
-		member.setPw(pw);
+	public Member update(Member member) {
+		Member member2 = memberRepository.findById(member.getUser_id())
+				.orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다. id=" + member.getUser_id()));
+		member2.setPw(member.getPw());
 		LocalDateTime date = LocalDateTime.now();
-		member.setUpdaDt(date);
-		member.setUpdaUser("USER");
-		return memberRepository.save(member);
+		member2.setUpdaDt(date);
+		member2.setUpdaUser("ADMIN");
+		return memberRepository.save(member2);
 	}
 
-	public List<Member> getMembers(Map<String, String> map) {
-		Condition condition = new Condition();
-		String id = (String) map.get("user_ids");
-		String name = (String) map.get("user_names");
-		String regiUser = (String) map.get("regiUser");
-		String updaUser = (String) map.get("updaUser");
-		String regif = (String) map.get("regi_dates_from");
-		String regit = (String) map.get("regi_dates_to");
-		String updaf = (String) map.get("upda_dates_from");
-		String updat = (String) map.get("upda_dates_to");
-		String useyn = (String) map.get("use");
-		LocalDateTime regis = null;
-		LocalDateTime regie = null;
-		LocalDateTime updas = null;
-		LocalDateTime updae = null;
-		if (!(regif.isEmpty() || regif == null)) {
-			regis = LocalDate.parse(regif).atStartOfDay();
-		}
-		if (!(regit.isEmpty() || regit == null)) {
-			regie = LocalDate.parse(regit).atTime(LocalTime.MAX);
-		}
+	public Map<String, Object> getMembers(Condition condition) {
+		
+		Map<String, Object> members = memberRepository.findMembers(condition);
 
-		if (!(updaf.isEmpty() || updaf == null)) {
-			updas = LocalDate.parse(updaf).atStartOfDay();
-		}
-		if (!(updat.isEmpty() || updat == null)) {
-			updae = LocalDate.parse(updat).atTime(LocalTime.MAX);
-		}
-		if (useyn.isEmpty()) {
-			useyn = null;
-		}
-		condition.setUser_id(id);
-		condition.setUser_name(name);
-		condition.setRegi_name(regiUser);
-		condition.setUpda_name(updaUser);
-		condition.setRegiStart(regis);
-		condition.setRegiEnd(regie);
-		condition.setUpdaStart(updas);
-		condition.setUpdaEnd(updae);
-		condition.setUse_YN(useyn);
-
-		return (List<Member>) memberRepository.findMembers(condition);
+		return members;
 	}
-
-	public List<Map<String, Object>> report(Map<String, String> map) {
-		Condition condition = new Condition();
-		String id = (String) map.get("user_ids");
-		String name = (String) map.get("user_names");
-		String regiUser = (String) map.get("regiUser");
-		String updaUser = (String) map.get("updaUser");
-		String regif = (String) map.get("regi_dates_from");
-		String regit = (String) map.get("regi_dates_to");
-		String updaf = (String) map.get("upda_dates_from");
-		String updat = (String) map.get("upda_dates_to");
-		String useyn = (String) map.get("use");
-		LocalDateTime regis = null;
-		LocalDateTime regie = null;
-		LocalDateTime updas = null;
-		LocalDateTime updae = null;
-
-		if (!(regif.isEmpty() || regif == null)) {
-			regis = LocalDate.parse(regif).atStartOfDay();
-		}
-		if (!(regit.isEmpty() || regit == null)) {
-			regie = LocalDate.parse(regit).atTime(LocalTime.MAX);
-		}
-
-		if (!(updaf.isEmpty() || updaf == null)) {
-			updas = LocalDate.parse(updaf).atStartOfDay();
-		}
-		if (!(updat.isEmpty() || updat == null)) {
-			updae = LocalDate.parse(updat).atTime(LocalTime.MAX);
-		}
-		if (useyn.isEmpty()) {
-			useyn = null;
-		}
-		condition.setUser_id(id);
-		condition.setUser_name(name);
-		condition.setRegi_name(regiUser);
-		condition.setUpda_name(updaUser);
-		condition.setRegiStart(regis);
-		condition.setRegiEnd(regie);
-		condition.setUpdaStart(updas);
-		condition.setUpdaEnd(updae);
-		condition.setUse_YN(useyn);
-		return memberRepository.report(condition);
+	
+	public List<Member> send(){
+		List<Member> members = memberRepository.findAll();
+		
+		return members;
 	}
 }

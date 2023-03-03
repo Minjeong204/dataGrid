@@ -1,81 +1,80 @@
 package com.example.demo.service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.example.demo.model.Menu;
 import com.example.demo.repository.MenuRepository;
-
-import jakarta.transaction.Transactional;
 
 @Service
 public class MenuService {
 	@Autowired
 	private MenuRepository menuRepository;
 
+	@Autowired
+	private RestTemplate restTemplate;
+
 	public MenuService(MenuRepository menuRepository) {
 		this.menuRepository = menuRepository;
 	}
 
 	public List<Menu> getAll() {
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> userList = restTemplate.getForObject("http://page1/table", List.class);
+		Map<String, String> nameList = new HashMap<>();
 
-		return (List<Menu>) menuRepository.findAll();
-	}
-
-	@Transactional
-	public Menu add(Map<String, String> map) {
-		int menuId = Integer.parseInt(map.get("menuId"));
-		String menuName = (String) map.get("menuName");
-		int sort = Integer.parseInt(map.get("sort"));
-		String uprMenuId = (String) map.get("uprMenuId");
-		int uprMenuIdInt;
-		String url = (String) map.get("url");
-		uprMenuIdInt = -1;
-		if (!(uprMenuId.isEmpty() || uprMenuId == null)) {
-			uprMenuIdInt = Integer.parseInt(uprMenuId);
+		for (Map<String, Object> map : userList) {
+			nameList.put((String)map.get("user_id"), (String)map.get("name"));
 		}
 
-		Menu menu = new Menu();
-		menu.setMenuId(menuId);
-		menu.setMenuNm(menuName);
-		menu.setSort(sort);
-		menu.setUprMenuId(uprMenuIdInt);
-		menu.setUrl(url);
-		LocalDateTime date = LocalDateTime.now();
-		menu.setRegiDt(date);
+		List<Menu> menus = menuRepository.findAll();
+
+		for (Menu menu : menus) {
+			menu.setRegiUser(nameList.get(menu.getRegiUser()));
+			menu.setUpdaUser(nameList.get(menu.getUpdaUser()));
+		}
+		return menus;
+	}
+
+	public Menu add(Menu menu) {
+
+		int uprMenuIdInt = menu.getUprMenuId();
+		if (uprMenuIdInt == 0) {
+			menu.setUprMenuId(-1);
+		}
+
+		menu.setRegiUser("ADMIN");
+		menu.setRegiDt(LocalDateTime.now());
 		menu.setUseYn("Y");
-		menu.setRegiUser("USER");
 
 		return menuRepository.save(menu);
 	}
 
-	@Transactional
-	public void delete(List<Map<String, String>> map) {
-		for (int i = 0; i < map.size(); i++) {
-			String ids = (String) map.get(i).get("menuId");
-			int id = Integer.parseInt(ids);
-			Menu menu = menuRepository.findById(id)
-					.orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다. id=" + id));
+	public void delete(int arr[]) {
+		for (int i = 0; i < arr.length; i++) {
+			Menu menu = menuRepository.findById(arr[i])
+					.orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다. id="));
 			menuRepository.delete(menu);
 		}
 	}
 
-	@Transactional
-	public Menu update(Map<String, String> map) {
-		int id = Integer.parseInt(map.get("menuId"));
-		int sort = Integer.parseInt(map.get("sort"));
-		String menuName = (String) map.get("menuName");
-		Menu menu = menuRepository.findById(id)
+	public Menu update(Menu menu) {
+		int id = menu.getMenuId();
+		int sort = menu.getSort();
+		String menuNm = menu.getMenuNm();
+		Menu menu2 = menuRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다. id=" + id));
-		menu.setMenuNm(menuName);
-		menu.setSort(sort);
+		menu2.setMenuNm(menuNm);
+		menu2.setSort(sort);
 		LocalDateTime date = LocalDateTime.now();
-		menu.setUpdaDt(date);
-		menu.setUpdaUser("USER");
-		return menuRepository.save(menu);
+		menu2.setUpdaDt(date);
+		menu2.setUpdaUser("USER");
+		return menuRepository.save(menu2);
 	}
 }

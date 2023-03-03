@@ -28,84 +28,58 @@ public class MemberRepositoryImpl extends QuerydslRepositorySupport implements M
 	}
 
 	@Override
-	public List<Member> findMembers(Condition condition) {
+	public Map<String, Object> findMembers(Condition condition) {
 		BooleanBuilder builder = new BooleanBuilder();
+		StringTemplate dateTimeToString = Expressions.stringTemplate("CONVERT (CHAR(10), {0}, 23)", member.regiDt);
 
-		if (!(condition.getUser_id() == null || condition.getUser_id().isEmpty())) {
-			builder.and(member.user_id.contains(condition.getUser_id()));
+		if (!(condition.getUser_ids() == null || condition.getUser_ids().isEmpty())) {
+			builder.and(member.user_id.contains(condition.getUser_ids()));
 		}
-		if (!(condition.getUser_name() == null || condition.getUser_name().isEmpty())) {
-			builder.and(member.name.contains(condition.getUser_name()));
+		if (!(condition.getUser_names() == null || condition.getUser_names().isEmpty())) {
+			builder.and(member.name.contains(condition.getUser_names()));
 		}
-		if (!(condition.getRegi_name() == null || condition.getRegi_name().isEmpty())) {
-			builder.and(member.regiUser.contains(condition.getRegi_name()));
+		if (!(condition.getRegiUser() == null || condition.getRegiUser().isEmpty())) {
+			builder.and(member.regiUser.contains(condition.getRegiUser()));
 		}
-		if (!(condition.getUpda_name() == null || condition.getUpda_name().isEmpty())) {
-			builder.and(member.updaUser.contains(condition.getUpda_name()));
+		if (!(condition.getUpdaUser() == null || condition.getUpdaUser().isEmpty())) {
+			builder.and(member.updaUser.contains(condition.getUpdaUser()));
 		}
-		if (!(condition.getRegiStart() == null)) {
-			builder.and(member.regiDt.after(condition.getRegiStart()));
+		if (!(condition.getRegi_dates_from() == null || condition.getRegi_dates_from().isEmpty())) {
+			LocalDateTime regis = LocalDateTime.parse(condition.getRegi_dates_from()).withHour(0).withMinute(0);
+			builder.and(member.regiDt.after(regis));
 		}
-		if (!(condition.getRegiEnd() == null)) {
-			builder.and(member.regiDt.before(condition.getRegiEnd()));
+		if (!(condition.getRegi_dates_to() == null || condition.getRegi_dates_to().isEmpty())) {
+			LocalDateTime regie = LocalDateTime.parse(condition.getRegi_dates_to()).withHour(23).withMinute(59);
+			builder.and(member.regiDt.before(regie));
 		}
-		if (!(condition.getUpdaStart() == null)) {
-			builder.and(member.updaDt.after(condition.getUpdaStart()));
+		if (!(condition.getUpda_dates_from() == null || condition.getUpda_dates_from().isEmpty())) {
+			LocalDateTime updas = LocalDateTime.parse(condition.getUpda_dates_from()).withHour(0).withMinute(0);
+			builder.and(member.updaDt.after(updas));
 		}
-		if (!(condition.getUpdaEnd() == null)) {
-			builder.and(member.updaDt.before(condition.getUpdaEnd()));
+		if (!(condition.getUpda_dates_to() == null || condition.getUpda_dates_to().isEmpty()) ){
+			LocalDateTime updae = LocalDateTime.parse(condition.getUpda_dates_to()).withHour(23).withMinute(59);
+			builder.and(member.updaDt.before(updae));
 		}
-		if (!(condition.getUse_YN() == null)) {
-			builder.and(member.useYn.eq(condition.getUse_YN()));
+		if (!(condition.getUse() == null || condition.getUse().isEmpty())) {
+			builder.and(member.useYn.eq(condition.getUse()));
 		}
 
 		List<Member> members = queryFactory.selectFrom(member).where(builder).fetch();
-		return members;
-	}
-
-	@Override
-	public List<Map<String, Object>> report(Condition condition) {
-		BooleanBuilder builder = new BooleanBuilder();
-		StringTemplate dateTimeToString = Expressions.stringTemplate("CONVERT (CHAR(10), {0}, 23)", member.regiDt);
-		if (!(condition.getUser_id() == null || condition.getUser_id().isEmpty())) {
-			builder.and(member.user_id.contains(condition.getUser_id()));
-		}
-		if (!(condition.getUser_name() == null || condition.getUser_name().isEmpty())) {
-			builder.and(member.name.contains(condition.getUser_name()));
-		}
-		if (!(condition.getRegi_name() == null || condition.getRegi_name().isEmpty())) {
-			builder.and(member.regiUser.contains(condition.getRegi_name()));
-		}
-		if (!(condition.getUpda_name() == null || condition.getUpda_name().isEmpty())) {
-			builder.and(member.updaUser.contains(condition.getUpda_name()));
-		}
-		if (!(condition.getRegiStart() == null)) {
-			builder.and(member.regiDt.after(condition.getRegiStart()));
-		}
-		if (!(condition.getRegiEnd() == null)) {
-			builder.and(member.regiDt.before(condition.getRegiEnd()));
-		}
-		if (!(condition.getUpdaStart() == null)) {
-			builder.and(member.updaDt.after(condition.getUpdaStart()));
-		}
-		if (!(condition.getUpdaEnd() == null)) {
-			builder.and(member.updaDt.before(condition.getUpdaEnd()));
-		}
-		if (!(condition.getUse_YN() == null)) {
-			builder.and(member.useYn.eq(condition.getUse_YN()));
-		}
-
 		List<Tuple> query = queryFactory.select(dateTimeToString, member.user_id.count()).where(builder).from(member)
 				.groupBy(dateTimeToString).fetch();
-		
-		List<Map<String, Object>> result = new ArrayList<>();
+
+		List<Map<String, Object>> report = new ArrayList<>();
 
 		for (Tuple a : query) {
 			Map<String, Object> temp = new HashMap<>();
 			temp.put("regiDt", a.get(dateTimeToString));
 			temp.put("count", a.get(member.user_id.count()));
-			result.add(temp);
+			report.add(temp);
 		}
+
+		Map<String, Object> result = new HashMap<>();
+		result.put("members", members);
+		result.put("report",report );
 		return result;
 	}
 

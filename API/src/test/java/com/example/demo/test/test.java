@@ -4,9 +4,6 @@
 //import java.util.List;
 //import java.util.Map;
 //
-//import javax.persistence.EntityManager;
-//import javax.persistence.PersistenceContext;
-//
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +12,9 @@
 //import com.example.demo.model.Condition;
 //import com.example.demo.repository.MemberRepository;
 //import com.example.demo.service.MemberService;
+//
+//import jakarta.persistence.EntityManager;
+//import jakarta.persistence.PersistenceContext;
 //
 //@Transactional
 //@SpringBootTest

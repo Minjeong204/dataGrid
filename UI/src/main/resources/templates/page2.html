@@ -13,34 +13,7 @@
 		<button type="button" class="btn-open-popup btn" data-toggle="modal"
 			data-target="#exampleModal2">수정</button>
 		<button class="btn" onclick="VIEW.delete2()">삭제</button>
-		<br> <br>
-		<!-- <form id="condition">
-			<div id="search_condition">
-				<label for="user_names" class="control-label">이름으로 검색</label> <input
-					type="text" id="user_names" name="user_names"
-					placeholder="검색할 이름을 입력하시오." /> <label for="user_ids"
-					class="control-label">ID로 검색</label> <input type="text"
-					id="user_ids" name="user_ids" placeholder="검색할 id를 입력하시오." /> <br>
-				<label for="regiUser" class="control-label">등록한 사람으로 검색</label> <input
-					type="text" id="regiUser" name="regiUser" placeholder="등록한 사람들" />
-				<label for="updaUser" class="control-label">수정한 사람으로 검색</label> <input
-					type="text" id="updaUser" name="updaUser" placeholder="수정한 사람" />
-				<br> <label for="regi_dates_from" class="control-label">등록한
-					시작날</label> <input type="date" id="regi_dates_from" name="regi_dates_from">
-				<label for="regi_dates_to" class="control-label">등록한 마지막날</label> <input
-					type="date" id="regi_dates_to" name="regi_dates_to"> <br>
-				<label for="upda_dates_from" class="control-label">수정 시작일</label> <input
-					type="date" id="upda_dates_from" name="upda_dates_from"> <label
-					for="upda_dates_to" class="control-label">수정 마지막일</label> <input
-					type="date" id="upda_dates_to" name="upda_dates_to"> <br>
-				<select name="use" id="use">
-					<option value="">USE_YN</option>
-					<option value="Y">Y</option>
-					<option value="N">N</option>
-				</select>
-			</div>
-		</form> -->
-		<br>
+		<br> <br> <br>
 		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -60,9 +33,9 @@
 									class="form-control"><br>
 							</div>
 							<div class="form-group">
-								<label for="menuName" class="control-label">메뉴 이름</label> <input
-									type="text" id="menuName" name="menuName"
-									placeholder="이름을 입력하세요" class="form-control"><br>
+								<label for="menuNm" class="control-label">메뉴 이름</label> <input
+									type="text" id="menuNm" name="menuNm" placeholder="이름을 입력하세요"
+									class="form-control"><br>
 							</div>
 							<div class="form-group">
 								<label for="sort" class="control-label">순번</label> <input
@@ -126,7 +99,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary"
+						<button type="button" class="btn btn-primary" id="submit"
 							onclick="VIEW.edit()">Send message</button>
 					</div>
 					</form>
@@ -150,35 +123,7 @@
 	<th:block layout:fragment="script">
 		<script type="text/javascript">
 			var rownum;
-			$('#exampleModal').on('show.bs.modal', function (event) {
-				var button = $(event.relatedTarget);
-				var modal = $(this);
-				console.log("소리꾼");
-			})
-			$('#exampleModal2').on('show.bs.modal', function (event) {
-				var button = $(event.relatedTarget);
-				var modal = $(this);
-				var instance = $("#gridContainer").dxDataGrid("instance");
-				var rn = instance.getSelectedRowKeys();
-				var id = rn.map(row => row.menuId);
-				var name = rn.map(row => row.menuNm);
-				var sort = rn.map(row => row.sort);
-				var uprMenuId = rn.map(row => row.uprMenuId);
-				var url = rn.map(row => row.url);
-				if (rn.length >= 2) {
-					alert("한 번에 하나씩만 수정가능합니다.");
-					return false;
-				}
-				$("#menuIde").val(id);
-				$("#menuNamee").val(name);
-				$("#sorte").val(sort);
-				$("#uprMenuIde").val(uprMenuId);
-				$("#urle").val(url);
-
-				console.log("ddd");
-				console.log(rn);
-
-			})	;
+	
 			
 			$.fn.serializeObject = function () {
 				"use strict";
@@ -206,6 +151,7 @@
 			const VIEW = {
 				init: function () {
 					VIEW.btnInit();
+					VIEW.modal();
 					VIEW.gridInit([]);
 				},
 				btnInit: function () {
@@ -213,6 +159,37 @@
 
 						VIEW.introCallback()
 					})
+				},
+				modal: function (){
+					$('#exampleModal').on('show.bs.modal', function (event) {
+						var button = $(event.relatedTarget);
+						var modal = $(this);
+						
+					})
+					$('#exampleModal2').on('show.bs.modal', function (event) {
+						var button = $(event.relatedTarget);
+						var modal = $(this);
+						var instance = $("#gridContainer").dxDataGrid("instance");
+						var rn = instance.getSelectedRowKeys();
+						var id = rn.map(row => row.menuId);
+						var name = rn.map(row => row.menuNm);
+						var sort = rn.map(row => row.sort);
+						var uprMenuId = rn.map(row => row.uprMenuId);
+						var url = rn.map(row => row.url);
+						if (rn.length >= 2) {
+							alert("한 번에 하나씩만 수정가능합니다.");
+							return false;
+						}
+						$("#menuIde").val(id);
+						$("#menuNamee").val(name);
+						$("#sorte").val(sort);
+						$("#uprMenuIde").val(uprMenuId);
+						$("#urle").val(url);
+
+						console.log("ddd");
+						console.log(rn);
+
+					})	;
 				},
 				introCallback: function () {
 					$.ajax({
@@ -291,9 +268,9 @@
 				delete2: function () {
 					var instance = $("#gridContainer").dxDataGrid("instance");
 					var rn = instance.getSelectedRowKeys();
-					var rnj = JSON.stringify(rn);
-					console.log(rnj);
-
+					var id = rn.map(row => row.menuId);
+					var rnj = JSON.stringify(id);
+					console.log(id);
 					var result2 = confirm("정말 삭제하실겁니까?");
 					if (result2 == true) {
 						$.ajax({
@@ -319,7 +296,7 @@
 					var sort = $("#sorte").val();
 					var uprMenuId = $("#uprMenuIde").val();
 					var data2 = $("#edit").serializeObject();
-					var data = {"menuId": MenuId, "menuName": MenuName,"sort":sort };
+					var data = {"menuId": MenuId, "menuNm": MenuName,"sort":sort };
 					var dataj = JSON.stringify(data);
 					$.ajax({
 						url: "/page2/update",
@@ -360,22 +337,22 @@
 				columns: [
 					{
 						dataField: 'menuId',
-						caption: 'name',
+						caption: 'menuId',
 					},
 					{
 						dataField: 'menuNm',
-						caption: 'user_id',
+						caption: 'menuNm',
 					},
 					{
 						dataField: 'sort',
-						caption: 'pw',
+						caption: 'sort',
 					}, {
 						dataField: 'uprMenuId',
-						caption: 'regiUser',
+						caption: 'uprMenuId',
 
 					}, {
 						dataField: 'url',
-						caption: 'regiUser',
+						caption: 'url',
 
 					},{
 						dataField: 'regiUser',
@@ -406,19 +383,6 @@
 							return data;
 						}
 					}
-				],
-			}
-
-			const VIEW2 = {
-				columns: [
-					{
-						dataField: 'regiDt',
-						caption: '등록일',
-					},
-					{
-						dataField: 'count',
-						caption: '계정수',
-					},
 				],
 			}
 

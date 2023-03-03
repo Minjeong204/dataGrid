@@ -58,7 +58,6 @@ public class UI_Controller {
 
 	@PostMapping("/page1/table")
 	public ResponseEntity<Object> searchTable(@RequestBody String json) {
-		System.out.println(json);
 		Gson gson = new Gson();
 
 		Map<String, String> map = gson.fromJson(json, new TypeToken<Map<String, String>>() {
@@ -67,7 +66,6 @@ public class UI_Controller {
 		Object data = restTemplate.postForObject("/page1/table", map, Object.class);
 		return new ResponseEntity<Object>(data, HttpStatus.OK);
 	}
-
 	@PostMapping("/page2/regi")
 	public ResponseEntity<Object> regiPage2(@RequestBody String json) {
 
@@ -95,26 +93,18 @@ public class UI_Controller {
 	}
 
 	@PostMapping("/page1/delete")
-	public ResponseEntity<Object> deleteTable(@RequestBody String json) {
-		System.out.println("gggg");
-		Gson gson = new Gson();
+	public ResponseEntity<Object> deletePage1(@RequestBody String[] arr) {
 
-		List<Map<String, String>> map = gson.fromJson(json, new TypeToken<List<Map<String, String>>>() {
-		}.getType());
-
-		ResponseEntity<String> data = restTemplate.postForEntity("/page1/delete", map, String.class);
+		Object data = restTemplate.postForObject("/page1/delete", arr, Object.class);
 
 		return new ResponseEntity<Object>(data, HttpStatus.OK);
 	}
+
 	@PostMapping("/page2/delete")
-	public ResponseEntity<Object> deletePage2(@RequestBody String json) {
-		Gson gson = new Gson();
-		
-		List<Map<String, String>> map = gson.fromJson(json, new TypeToken<List<Map<String, String>>>() {
-		}.getType());
-		
-		ResponseEntity<String> data = restTemplate.postForEntity("/page2/delete", map, String.class);
-		
+	public ResponseEntity<Object> deletePage2(@RequestBody int[] arr) {
+
+		Object data = restTemplate.postForObject("/page2/delete", arr, Object.class);
+
 		return new ResponseEntity<Object>(data, HttpStatus.OK);
 	}
 
@@ -134,15 +124,16 @@ public class UI_Controller {
 
 		return new ResponseEntity<Object>(data, HttpStatus.OK);
 	}
+
 	@PostMapping("/page2/update")
 	public ResponseEntity<Object> updatePage2(@RequestBody String json) {
 		Gson gson = new Gson();
-		
+
 		Map<String, String> map = gson.fromJson(json, new TypeToken<Map<String, String>>() {
 		}.getType());
-		
+
 		ResponseEntity<String> data = restTemplate.postForEntity("/page2/update", map, String.class);
-		
+
 		return new ResponseEntity<Object>(data, HttpStatus.OK);
 	}
 

@@ -4,12 +4,53 @@
 		<div class="col-3 bd-sidebar"
 			style="width: 180px; float: left; height: 1000px">
 			<ul class="nav nav-stacked" style="margin-top: 15%;">
-				<li><a href="/page1">사용자 관리</a></li>
-				<li><a href="/page2">메뉴 관리</a></li>
+				<li></li>
 			</ul>
 			<br>
 		</div>
+		<!-- 		<th:block layout:fragment="script">
+		</th:block> -->
 
+		<script type="text/javascript">
+			$(function() {
+				SIDE.init();
+			});
+
+			const SIDE = {
+				init : function() {
+					SIDE.listInit();
+				},
+				listInit : function() {
+					$.ajax({
+						url : "page2/table",
+						type : "POST",
+						contentType : "application/json; charset=UTF-8",
+						success : function(data) {
+							data.sort(function(a, b) { // 오름차순
+								return a.sort - b.sort;
+							});
+
+							for ( var i in data) {
+
+								if (!(data[i].uprMenuId == -1)) {
+									var num = data[i].uprMenuId;
+									$("li[data-num = '" + num + "']").append(
+											"<ul><li data-num = '"+data[i].sort+"'><a href = '"+data[i].url+ "'>"
+													+ data[i].menuNm
+													+ "</a></li></ul>");
+								} else {
+									$(".nav").append(
+											"<li data-num = '"+data[i].sort+"'><a href = '"+data[i].url+ "'>"
+													+ data[i].menuNm
+													+ "</a></li>");
+								}
+
+							}
+						}
+					});
+				}
+			}
+		</script>
 	</th:block>
 </body>
 </html>

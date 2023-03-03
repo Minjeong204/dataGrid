@@ -1,15 +1,16 @@
 package com.example.demo.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.model.Condition;
 import com.example.demo.model.Member;
 import com.example.demo.service.MemberService;
 
@@ -17,39 +18,38 @@ import com.example.demo.service.MemberService;
 public class API_controller {
 
 	private final MemberService memberService;
-	/*
-	 * @Autowired private MemberRepository memberRepository;
-	 */
 
 	public API_controller(MemberService memberService) {
 		this.memberService = memberService;
 	}
 
 	@PostMapping("/table")
-	public ResponseEntity<Map<String, Object>> search(@RequestBody Map<String, String> map) {
-		List<Member> members = memberService.getMembers(map);
-		List<Map<String, Object>> report = memberService.report(map);
-		Map<String, Object> result = new HashMap<>();
-		result.put("members", members);
-		result.put("report", report);
-		return new ResponseEntity<Map<String, Object>>(result, HttpStatus.OK);
+	public ResponseEntity<Map<String, Object>> search(@RequestBody Condition condition) {
+		Map<String, Object> members = memberService.getMembers(condition);
+		return new ResponseEntity<Map<String, Object>>(members, HttpStatus.OK);
+	}
+
+	@GetMapping("/table")
+	public ResponseEntity<List<Member>> search2() {
+		List<Member> members = memberService.send();
+		return new ResponseEntity<List<Member>>(members, HttpStatus.OK);
 	}
 
 	@PostMapping("/delete")
-	public ResponseEntity<List<Map<String, String>>> delete(@RequestBody List<Map<String, String>> map) {
-		memberService.delete(map);
-		return new ResponseEntity<List<Map<String, String>>>(map, HttpStatus.OK);
+	public ResponseEntity<Object> delete(@RequestBody String[] arr) {
+		memberService.delete(arr);
+		return new ResponseEntity<Object>(arr, HttpStatus.OK);
 	}
 
 	@PostMapping("/update")
-	public ResponseEntity<?> update(@RequestBody Map<String, String> map) {
-		memberService.update(map);
-		return new ResponseEntity<Object>(map, HttpStatus.OK);
+	public ResponseEntity<?> update(@RequestBody Member member) {
+		memberService.update(member);
+		return new ResponseEntity<Object>(member, HttpStatus.OK);
 	}
 
 	@PostMapping("/regi")
-	public ResponseEntity<?> page1(@RequestBody Map<String, String> map) {
-		memberService.add(map);
+	public ResponseEntity<?> page1(@RequestBody Member member) {
+		memberService.add(member);
 		return new ResponseEntity<Object>(HttpStatus.OK);
 	}
 
