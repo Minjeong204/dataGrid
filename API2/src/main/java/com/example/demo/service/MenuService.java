@@ -25,16 +25,16 @@ public class MenuService {
 	}
 
 	public List<Menu> getAll() {
-		@SuppressWarnings("unchecked")
 		// List<Map<String, Object>> userList =
 		// restTemplate.getForObject("http://page1/table", List.class);
+		@SuppressWarnings("unused")
 		Map<String, String> nameList = new HashMap<>();
 
 //		for (Map<String, Object> map : userList) {
 //			nameList.put((String)map.get("user_id"), (String)map.get("name"));
 //		}
 
-		List<Menu> menus = menuRepository.findAll();
+		List<Menu> menus = menuRepository.findByUseYn("Y");
 
 		Map<String, String> idmap = new HashMap<>();
 
@@ -47,25 +47,25 @@ public class MenuService {
 				idmap.put(a.getUpdaUser(), null);
 		}
 
+		@SuppressWarnings("unchecked")
 		Map<String, String> mapped = restTemplate.postForObject("http://page1/send", idmap, Map.class);
 
 		for (Menu menu : menus) {
 //			menu.setRegiUser(nameList.get(menu.getRegiUser()));
 //			menu.setUpdaUser(nameList.get(menu.getUpdaUser()));
 			menu.setRegiUser(mapped.get(menu.getRegiUser()));
-			if (!menu.getUpdaUser().isEmpty() || !(menu.getUpdaUser() == null))
-				menu.setUpdaUser(mapped.get(menu.getUpdaUser()));
+			menu.setUpdaUser(mapped.get(menu.getUpdaUser()));
 		}
 		return menus;
 	}
 
 	public Menu add(Menu menu) {
-
 		int uprMenuIdInt = menu.getUprMenuId();
 		if (uprMenuIdInt == 0) {
 			menu.setUprMenuId(-1);
 		}
-
+		int max = menuRepository.findMax();
+		menu.setMenuId(max + 1);
 		menu.setRegiUser("ADMIN");
 		menu.setRegiDt(LocalDateTime.now());
 		menu.setUseYn("Y");
